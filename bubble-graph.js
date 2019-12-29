@@ -3,7 +3,7 @@ const R = 60;
 function CreatePoint() {
     return { x: Random(WIDTH), y: Random(HEIGHT), r: Random(R), color: RandomColor() }
 }
-const DELAY = 30//700;
+const DELAY = 500//700;
 const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)

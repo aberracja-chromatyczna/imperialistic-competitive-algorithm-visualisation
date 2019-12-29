@@ -167,10 +167,23 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
     }
     yield nations
 }
+function ParseColor(stringColor) {
+    const colorArray =  stringColor.match(/\d+/g).map(Number)
+    console.log(colorArray)
+    return {r: colorArray[0], g: colorArray[1], b: colorArray[2]}
+}
 const RangeXY = (x1, x2, y1,y2) => {return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } }}
 function* GetData() {
-    function GetRadius(i, len, BASE) {
-        return BASE + (i + 1) / len * BASE;
+    function GetRadius(part, whole, BASE, ADD = BASE) {
+        return BASE + (part + 1) * ADD / whole;
+    }
+    function MakeColorDarker(color) {
+        const darkifyCoefficient = 0.8;
+        let {r,g,b} = ParseColor(color)
+        r *= darkifyCoefficient
+        g *= darkifyCoefficient
+        b *= darkifyCoefficient
+        return `RGB(${r},${g},${b})` 
     }
     function GetRange(colonies) {
         const minX = colonies.map(c => c.x).reduce( findMinimumReducer, colonies[0].x)
@@ -205,9 +218,9 @@ function* GetData() {
             }
             else {
                 let i = empires.indexOf(n)
-                result.r = GetRadius(i, empires.length, METRO_BASE_RADIUS)
-                result.color = n.color
+                result.color = MakeColorDarker(n.color)
                 result.colonies = GetColoniesFromEmpire(n, colonies)
+                result.r = GetRadius(result.colonies.length, colonies.length, METRO_BASE_RADIUS, METRO_ADD_RADIUS)
             }
             return result
         })
@@ -218,6 +231,7 @@ function* GetData() {
     const N_EMPIRES = 10;
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
+    const METRO_ADD_RADIUS = 100;
     const imperial = Imperial(RANGE, N, N_EMPIRES);
     let next = imperial.next();
     let range = RANGE;
@@ -226,7 +240,7 @@ function* GetData() {
         const colonies = GetColonies(nations).sort(sortNations);
         const empires = GetEmpires(nations).sort(sortNations);
         yield MapDots(nations,empires, colonies, range)
-        range = GetRange(colonies.concat(empires));
+        range = GetRange(empires);
         yield MapDots(nations,empires, colonies, range) // updated scale
         next = imperial.next();
     }
