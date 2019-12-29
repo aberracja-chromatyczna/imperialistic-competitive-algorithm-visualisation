@@ -3,7 +3,7 @@ const R = 60;
 function CreatePoint() {
     return { x: Random(WIDTH), y: Random(HEIGHT), r: Random(R), color: RandomColor() }
 }
-const DELAY = 700;
+const DELAY = 30//700;
 const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)
@@ -27,7 +27,6 @@ function DoSth() {
         return;
     }
     const val = next.value;
-    console.log(val)
     const nations = val.nations;
     nations.forEach(e => { if (e.colonies) console.log(e.r, e.colonies) });
     UpdateData(nations);

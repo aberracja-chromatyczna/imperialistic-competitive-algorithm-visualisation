@@ -48,7 +48,14 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         return GetRandomFromArrayWithProbabilites(EmpiresIndexes, strengths);
     }
     function GetNormalizedStrengths(empires_ = empires) {
+        if(!empires_[0]) {
+            console.log("to tukej")
+            console.log(empires_)
+            console.log(empires)
+            console.log(colonies)
+        }
         const weakestValue = empires_[0].val;
+        
         const normalized = empires_.map(n => -n.val + weakestValue);
         const sum = normalized.reduce((acc, cur) => acc + cur, 0);
         return normalized.map(n => Math.abs(n / sum));
@@ -149,15 +156,16 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         yield nations;
         UpdateColonyMetropolisRelation();
         RemoveEmpiresWithoutColonies();
+        if(empires.length == 1) {
+            break;
+        }
         ImperialisticCompetition();  
         empires.sort(sortNations);
         colonies.sort(sortNations);
         yield nations;
-        if(empires.length == 1) {
-            break;
-        }
+        
     }
-    return yield { empires, colonies };
+    yield nations
 }
 const RangeXY = (x1, x2, y1,y2) => {return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } }}
 function* GetData() {
@@ -180,6 +188,7 @@ function* GetData() {
     function GetColonies(nations) {
         return nations.filter(n => n.metropolis !== null )
     }
+    const GetColoniesFromEmpire = (empire,colonies) => colonies.filter(c => c.metropolis == empire.id);
     const IsColony = n => n.metropolis !== null
     function MapDots(nations,empires, colonies,range) { 
         const widthMultiplier = WIDTH / (range.x.stop - range.x.start);
@@ -191,8 +200,6 @@ function* GetData() {
             if(IsColony(n)) {
                 let i = colonies.indexOf(n)
                 result.r = GetRadius(i, colonies.length, COLONY_BASE_RADIUS)
-                ShowArray(empires)
-                Show(n)
                 result.color = empires.find(el => el.id == n.metropolis).color
                 result.colonies = null
             }
@@ -200,10 +207,10 @@ function* GetData() {
                 let i = empires.indexOf(n)
                 result.r = GetRadius(i, empires.length, METRO_BASE_RADIUS)
                 result.color = n.color
-                result.colonies = null
+                result.colonies = GetColoniesFromEmpire(n, colonies)
             }
             return result
-        } )
+        })
         return {nations: nationsMapped, range};
     }
     
