@@ -12,16 +12,18 @@
 <body>
     <div class="wrapper">
         <div id="fun-container" class="bordered"></div>
-        <div id="avg-value-container"></div>
-        <div id="info-container">
+        <div class="right-side-wrapper">
+            <div id="avg-value-container"></div>
+            <div id="controls-container">
+                <button id="State">STOP</button>
+                <button id="Reset">RESET</button>
+                <p id="DelayDisplay">Speed:</p>
+                <input id="Delay" type="range" min="-3000" max="-1" value="-1500">
+            </div>
+            <div id="info-container"></div>
         </div>
-        <div id="controls-container">
-                <button id="Reset">STOP</button>
-                <button id="Resume">RESUME</button>
-            <p id="DelayDisplay">Speed:</p> 
-            <input id="Delay" type="range" min="1" max="3000" value="1000">
-            
-        </div>
+
+
     </div>
 
     <script src='https://d3js.org/d3.v4.min.js'></script>

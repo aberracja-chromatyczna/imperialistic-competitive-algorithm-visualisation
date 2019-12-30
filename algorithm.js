@@ -15,26 +15,6 @@ function F(x, y) {
     //return x ** 2 + y ** 2;
     return 10 * 2 + x ** 2 + y ** 2 - 10 * Math.cos(2 * Math.PI * x) - 10 * Math.cos(2 * Math.PI * y);
 }
-function GetRandomFromArrayWithProbabilites(results, weights) {
-    var num = Math.random(),
-        s = 0,
-        lastIndex = weights.length - 1;
-    for (var i = 0; i < lastIndex; ++i) {
-        s += weights[i];
-        if (num < s) {
-            return results[i];
-        }
-    }
-    return results[lastIndex];
-};
-function Show(a) {
-    console.log(a.id, a.val, a.metropolis);
-}
-function ShowArray(a, label) {
-    console.log(label);
-    a.forEach(Show);
-    console.log("dlugosc cwela", a.length)
-}
 const sortNations = (a, b) => b.val - a.val;
 const findMinimumReducer = (acc, cur) => acc > cur ? cur : acc;
 const findMaximumReducer = (acc, cur) => acc < cur ? cur : acc;
@@ -48,14 +28,7 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         return GetRandomFromArrayWithProbabilites(EmpiresIndexes, strengths);
     }
     function GetNormalizedStrengths(empires_ = empires) {
-        if(!empires_[0]) {
-            console.log("to tukej")
-            console.log(empires_)
-            console.log(empires)
-            console.log(colonies)
-        }
-        const weakestValue = empires_[0].val;
-        
+        const weakestValue = empires_[0].val;       
         const normalized = empires_.map(n => -n.val + weakestValue);
         const sum = normalized.reduce((acc, cur) => acc + cur, 0);
         return normalized.map(n => Math.abs(n / sum));
@@ -140,7 +113,6 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
             }
         })
     }
-    
     const NumberOfColonies = N - NumberOfEmpires;
     let nations = GenerateNations(N, range);
     nations.forEach(n => n.val = F(n.x, n.y));
@@ -167,12 +139,7 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
     }
     yield nations
 }
-function ParseColor(stringColor) {
-    const colorArray =  stringColor.match(/\d+/g).map(Number)
-    return {r: colorArray[0], g: colorArray[1], b: colorArray[2]}
-}
-const RangeXY = (x1, x2, y1,y2) => {return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } }}
-function* GetData() {
+function* GetData(config) {
     function GetRadius(part, whole, BASE, ADD = BASE) {
         return BASE + (part + 1) * ADD / whole;
     }
@@ -227,13 +194,11 @@ function* GetData() {
         })
         return {nations: nationsMapped, range};
     }
-    
-    const N = 50;
-    const N_EMPIRES = 10;
+    const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA} = config;
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
     const METRO_ADD_RADIUS = 100;
-    const imperial = Imperial(RANGE, N, N_EMPIRES);
+    const imperial = Imperial(RANGE, N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA);
     let next = imperial.next();
     let range = RANGE;
     while (!next.done) {
