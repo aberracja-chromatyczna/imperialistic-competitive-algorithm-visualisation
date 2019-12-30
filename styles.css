@@ -2,6 +2,12 @@
   border-style: solid;
   
 }
+table td, table th {
+  font-size: 20px;
+  padding: 0 5px;
+  text-align: left;
+  border-bottom: 1px solid #CCC;
+}
 .wrapper {
   overflow: hidden;
 }
@@ -12,6 +18,9 @@
   float:left;
   
   /* display: inline-block; */
+}
+#parameters-wrapper {
+  float: right
 }
 #info-container {
   /* display:inline-block; */
@@ -26,6 +35,10 @@
 }
 .color-box {
   display: inline;
+}
+
+input[type=number]{
+  width: 60px;
 }
 
 .bubbles {

@@ -19,6 +19,65 @@
                 <button id="Reset">RESET</button>
                 <p id="DelayDisplay">Speed:</p>
                 <input id="Delay" type="range" min="-3000" max="-1" value="-1500">
+                <div id="parameters-wrapper">
+                    <table id="parameters-table">
+                        <tr>
+                            <td>Iteration</td>
+                            <td>
+                                <div id="iteration"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Empires alive</td>
+                            <td>
+                                <div id="empires-alive"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Found optimum</td>
+                            <td>
+                                <div id="found-optimum"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Number of nations:</td>
+                            <td>
+                                <input type="number" id="nations" name="nations" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Number of empires:</td>
+                            <td>
+                                <input type="number" id="empires" name="empires" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Number of iterations:</td>
+                            <td>
+                                <input type="number" id="iterations-number" name="iterations-number" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Alpha:</td>
+                            <td>
+                                <input type="number" id="alpha" name="alpha" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Beta:</td>
+                            <td>
+                                <input type="number" id="beta" name="beta" size="2">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gamma:</td>
+                            <td>
+                                <input type="number" id="gamma" name="gamma" size="4">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
             <div id="info-container"></div>
         </div>
