@@ -1,8 +1,5 @@
 const HEIGHT = 900, WIDTH = 900;
-const R = 60;
-function CreatePoint() {
-    return { x: Random(WIDTH), y: Random(HEIGHT), r: Random(R), color: RandomColor() }
-}
+const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
     N: 50,
@@ -68,6 +65,7 @@ function DoSth() {
     UpdateInfo(newInfo)
     UpdateData(nations);
 }
+
 function SetDefaultValueConfigs() {
     document.getElementById("nations").value = defaultConfig.N
     document.getElementById("empires").value = defaultConfig.N_EMPIRES
@@ -77,10 +75,15 @@ function SetDefaultValueConfigs() {
     document.getElementById("gamma").value = defaultConfig.GAMMA
 }
 function GetConfig() {
-    const N = document.getElementById("nations").value
-    const N2 = document.getElementById("parameters-table").rows
-    console.log(N2)
-    console.log(N)
+    const N = GetById("nations").value
+    const N_EMPIRES = GetById("empires").value
+    const ITERATIONS = GetById("iterations-number").value
+    const ALPHA = GetById("alpha").value
+    const BETA = GetById("beta").value
+    const GAMMA = GetById("gamma").value
+    const RANGE = defaultConfig.RANGE
+    const config = {N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE}
+    return config;
 }
 let intId = null;
 let iter = 0
@@ -98,8 +101,7 @@ function Stop() {
 function Reset() {
     Stop();
     UpdateDelayLabel();
-    SetDefaultValueConfigs();
-    let config = defaultConfig;
+    const config = GetConfig();
     intId = null;
     iter = 0
     Data = GetData(config);
@@ -126,5 +128,6 @@ function State() {
 d3.select("#State").on("click", State);
 d3.select("#Reset").on("click", Reset)
 d3.select("#Delay").on("change", ChangeDelay)
-
+d3.select("#Reset-params").on("click", SetDefaultValueConfigs)
+SetDefaultValueConfigs();
 Reset();

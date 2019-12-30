@@ -15,12 +15,11 @@
         <div class="right-side-wrapper">
             <div id="avg-value-container"></div>
             <div id="controls-container">
-                <button id="State">STOP</button>
-                <button id="Reset">RESET</button>
                 <p id="DelayDisplay">Speed:</p>
                 <input id="Delay" type="range" min="-3000" max="-1" value="-1500">
-                <div id="parameters-wrapper">
-                    <table id="parameters-table">
+                <button id="State">STOP</button>
+                <div id="stats-wrapper">
+                    <table id="stats-table">
                         <tr>
                             <td>Iteration</td>
                             <td>
@@ -39,6 +38,10 @@
                                 <div id="found-optimum"></div>
                             </td>
                         </tr>
+                    </table>
+                </div>
+                <div id="parameters-wrapper">
+                    <table id="parameters-table">
                         <tr>
                             <td>Number of nations:</td>
                             <td>
@@ -75,9 +78,15 @@
                                 <input type="number" id="gamma" name="gamma" size="4">
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <button id="Reset">RESTART</button>
+                                <button id="Reset-params">RESET PARAMS TO DEFAULT</button>
+                            </td>
+                        </tr>
+
                     </table>
                 </div>
-
             </div>
             <div id="info-container"></div>
         </div>
