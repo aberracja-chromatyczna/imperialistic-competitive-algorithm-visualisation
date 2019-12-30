@@ -1,0 +1,36 @@
+.bordered {
+  border-style: solid;
+  
+}
+.wrapper {
+  overflow: hidden;
+}
+#fun-container {
+  float:left;
+  
+  /* display: inline-block; */
+}
+#info-container {
+  display:inline-block;
+  margin-left: 8px;
+  font-size: 20px;
+}
+#controls-container {
+  display:inline-block;
+  margin-left: 8px;
+
+  /* box-sizing: border-box; */
+  /* display: inline-block; */
+}
+.color-box {
+  display: inline;
+}
+
+.bubbles {
+    stroke-width: 1px;
+    stroke: black;
+    opacity: .8
+  }
+  .bubbles:hover {
+    stroke: black;
+  }

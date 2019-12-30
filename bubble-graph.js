@@ -3,7 +3,7 @@ const R = 60;
 function CreatePoint() {
     return { x: Random(WIDTH), y: Random(HEIGHT), r: Random(R), color: RandomColor() }
 }
-const DELAY = 500//700;
+let DELAY = 1500//700;
 const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)
@@ -20,7 +20,18 @@ function UpdateData(newData) {
         .attr("cy", d => d.y)
         .style("fill", d => d.color)
 }
-const newShit = GetData();
+function UpdateInfo(newInfo) {
+    console.log(newInfo)
+    const formatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,      
+        maximumFractionDigits: 4,
+     });
+    const header = `<b>Empires:</b> <br> `;
+    const info = header.concat( newInfo.map( (nation) => `<p class="color-box" style="background-color:${nation.color};">⠀⠀⠀</p> #${nation.id} colonies: ${nation.colonies.length} 
+    value: ${formatter.format(nation.value)} <br>` ).join("") )
+    document.getElementById("info-container").innerHTML = info
+}
+let newShit = GetData();
 function DoSth() {
     const next = newShit.next();
     if(next.done) {
@@ -28,7 +39,9 @@ function DoSth() {
     }
     const val = next.value;
     const nations = val.nations;
-    nations.forEach(e => { if (e.colonies) console.log(e.r, e.colonies) });
+    const newInfo = nations.filter( n => n.colonies !== null )
+    newInfo.sort( (a,b) => b.colonies.length - a.colonies.length )
+    UpdateInfo(newInfo)
     UpdateData(nations);
 }
 let intId = null;
@@ -46,5 +59,13 @@ function Resume() {
     }
 
 }
+function ChangeDelay() {
+    DELAY = this.value
+    d3.select("#DelayDisplay").text(`Speed: ${this.value}`)
+    Stop()
+    Resume()
+}
 d3.select("#Reset").on("click", Stop);
 d3.select("#Resume").on("click", Resume);
+d3.select("#Delay").on("change", ChangeDelay )
+

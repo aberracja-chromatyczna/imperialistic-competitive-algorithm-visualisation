@@ -6,22 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Imperialistic competitive algorithm</title>
-    <link rel = "stylesheet"
-    type = "text/css"
-    href = "./bubbles.css" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
 </head>
 
 <body>
-    <div id="fun-container"></div>
-    <button id="Reset">STOP</button>
-    <button id="Resume">RESUME</button>
+    <div class="wrapper">
+        <div id="fun-container" class="bordered"></div>
+        <div id="avg-value-container"></div>
+        <div id="info-container">
+        </div>
+        <div id="controls-container">
+                <button id="Reset">STOP</button>
+                <button id="Resume">RESUME</button>
+            <p id="DelayDisplay">Speed:</p> 
+            <input id="Delay" type="range" min="1" max="3000" value="1000">
+            
+        </div>
+    </div>
+
     <script src='https://d3js.org/d3.v4.min.js'></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src='./helper.js'></script>
     <script src='./algorithm.js'></script>
     <script src='./bubble-graph.js'></script>
-    
-
 </body>
 
 </html>

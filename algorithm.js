@@ -169,7 +169,6 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
 }
 function ParseColor(stringColor) {
     const colorArray =  stringColor.match(/\d+/g).map(Number)
-    console.log(colorArray)
     return {r: colorArray[0], g: colorArray[1], b: colorArray[2]}
 }
 const RangeXY = (x1, x2, y1,y2) => {return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } }}
@@ -208,7 +207,9 @@ function* GetData() {
         const heightMultipler = HEIGHT / (range.y.stop - range.y.start);
         const nationsMapped = nations.map( n => {
             let result = {x: widthMultiplier * (n.x - range.x.start),
-                y: heightMultipler * (n.y - range.y.start) 
+                y: heightMultipler * (n.y - range.y.start),
+                value: n.val,
+                id: n.id
             }
             if(IsColony(n)) {
                 let i = colonies.indexOf(n)
