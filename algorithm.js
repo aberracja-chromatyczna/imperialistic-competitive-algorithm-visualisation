@@ -53,13 +53,13 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         return empires.reduce((acc, cur) => normalizedValue(acc) > normalizedValue(cur) ? cur : acc, empires[0]);
     }
     function MakeItToColony(emp) {
-        RemoveFromEmpires(emp)
         emp.metropolis = GetNewMetropolis()
         colonies.push(emp)
     }
     function RemoveEmpiresWithoutColonies() {
-        empires.filter(empire => GetColonies(empire).length == 0)
-            .forEach(MakeItToColony);
+        const toDemote = empires.filter(empire => GetColonies(empire).length == 0)
+        toDemote.forEach(RemoveFromEmpires);
+        toDemote.forEach(MakeItToColony)
     }
     function GetOtherMetropolis(empire) {
         const filterEmpires = empires.filter(emp => emp.id !== empire.id) 
@@ -99,7 +99,7 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         col.metropolis = null;
         col.color = oldMetro.color // To stop old empires from changing colors constantly
         oldMetro.metropolis = col.id;
-        empires = empires.filter(e => e.id !== oldMetro.id);
+        RemoveFromEmpires(oldMetro)
         empires.push(col);
         colonies = colonies.filter(c => c.id !== col.id);
         colonies.push(oldMetro);
@@ -121,16 +121,31 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
     let colonies = sorted.slice(0, NumberOfColonies);
     AssignColonyMetropolisRelation();
     yield nations;
+    ShowArray(colonies, "kolonie")
+    ShowArray(empires, "imperia")
     for (let i = 0; i < iterations; i++) {
         Assimilate();
         empires.sort(sortNations);
         colonies.sort(sortNations);
         yield nations;
+
+        console.log("przed updejtach")
+        ShowArray(colonies, "kolonie")
+        ShowArray(empires, "imperia")
+
         UpdateColonyMetropolisRelation();
+        console.log("po updejtach")
+        ShowArray(colonies, "kolonie")
+        ShowArray(empires, "imperia")
         RemoveEmpiresWithoutColonies();
         if(empires.length == 1) {
             break;
         }
+
+        console.log("po wszystkim")
+        ShowArray(colonies, "kolonie")
+        ShowArray(empires, "imperia")
+
         ImperialisticCompetition();  
         empires.sort(sortNations);
         colonies.sort(sortNations);
@@ -197,6 +212,7 @@ function* GetData(config) {
         return {nations: nationsMapped, range};
     }
     const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA} = config;
+    console.log(config)
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
     const METRO_ADD_RADIUS = 100;
