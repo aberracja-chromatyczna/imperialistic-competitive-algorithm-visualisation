@@ -2,13 +2,13 @@ const HEIGHT = 900, WIDTH = 900;
 const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
-    N: 50,
-    N_EMPIRES: 10,
+    N: 400,
+    N_EMPIRES: 30,
     RANGE: RangeXY(-10, 10, -10, 10),
     ITERATIONS: 1000,
     ALPHA: 0.5,
     BETA: 2,
-    GAMMA: 0.01 * Math.PI
+    GAMMA: 0.1 * Math.PI
 }
 const svg = d3.select("#fun-container")
     .append("svg")
@@ -31,6 +31,7 @@ const FloatFormatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 4,
 });
+const ColorBox = color => `<p class="color-box" style="background-color:${color};">⠀⠀⠀</p>`
 function UpdateLabels(newInfo) {
     const IntegerFormatter = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,
@@ -38,15 +39,18 @@ function UpdateLabels(newInfo) {
     });
     d3.select("#iteration").text( IntegerFormatter.format(iter/4 + 1))
     d3.select("#empires-alive").text( newInfo.length )
-    const values = newInfo.map( n => n.value );
-    const min = values.reduce( (acc,cur) => acc > cur ? cur : acc, values[0] )
-    d3.select("#found-optimum").text( FloatFormatter.format(min) )
+    const optimum = newInfo.reduce( (acc,cur) => acc.value > cur.value ? cur : acc, newInfo[0] )
+    d3.select("#best-empire-color").html( ColorBox(optimum.color) )
+    const args = `(${FloatFormatter.format(optimum.realX)},${FloatFormatter.format(optimum.realY)})`
+    d3.select("#optimum-args").text( args )
+    d3.select("#found-optimum").text( FloatFormatter.format(optimum.value) )
+    
 }
 function UpdateInfo(newInfo) {
     
     const header = `<b>Empires (${newInfo.length}):</b> <br> `;
-    const info = header.concat(newInfo.map((nation) => `<p class="color-box" style="background-color:${nation.color};">⠀⠀⠀</p> 
-    #${nation.id} colonies: ${nation.colonies.length} 
+    const info = header.concat(newInfo.map((nation) => `${ColorBox(nation.color)} 
+    colonies: ${nation.colonies.length} 
     value: ${FloatFormatter.format(nation.value)} <br>`).join(""))
     document.getElementById("info-container").innerHTML = info
 
@@ -72,7 +76,7 @@ function SetDefaultValueConfigs() {
     document.getElementById("iterations-number").value = defaultConfig.ITERATIONS
     document.getElementById("alpha").value = defaultConfig.ALPHA
     document.getElementById("beta").value = defaultConfig.BETA
-    document.getElementById("gamma").value = defaultConfig.GAMMA
+    document.getElementById("gamma").value = FloatFormatter.format(defaultConfig.GAMMA)
 }
 function GetConfig() {
     const N = GetById("nations").value
@@ -88,6 +92,7 @@ function GetConfig() {
 let intId = null;
 let iter = 0
 let Data;
+let avgs = []
 const SetStateButtonText = text => document.getElementById("State").innerText = text
 function Resume() {
     intId = setInterval(DoSth, DELAY);
@@ -104,7 +109,8 @@ function Reset() {
     const config = GetConfig();
     intId = null;
     iter = 0
-    Data = GetData(config);
+    avgs = []
+    Data = GetData(config);  
     Resume();
 }
 const MAX_DELAY = -1 * document.getElementById("Delay").min;

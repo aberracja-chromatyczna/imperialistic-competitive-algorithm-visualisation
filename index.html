@@ -13,11 +13,11 @@
     <div class="wrapper">
         <div id="fun-container" class="bordered"></div>
         <div class="right-side-wrapper">
-            <div id="avg-value-container"></div>
+            <div id="avg-value-container  bordered"></div>
             <div id="controls-container">
                 <p id="DelayDisplay">Speed:</p>
                 <input id="Delay" type="range" min="-3000" max="-1" value="-1500">
-                <button id="State">STOP</button>
+                <button id="State" class="big-btn">STOP</button>
                 <div id="stats-wrapper">
                     <table id="stats-table">
                         <tr>
@@ -33,7 +33,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Found optimum</td>
+                            <td>Best empire</td>
+                            <td>
+                                <div id="best-empire-color"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Optimum</td>
+                            <td>
+                                <div id="optimum-args"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Optimum value</td>
                             <td>
                                 <div id="found-optimum"></div>
                             </td>
@@ -45,37 +57,37 @@
                         <tr>
                             <td>Number of nations:</td>
                             <td>
-                                <input type="number" id="nations" name="nations" size="4">
+                                <input type="number" id="nations" name="nations" size="4" min="0">
                             </td>
                         </tr>
                         <tr>
                             <td>Number of empires:</td>
                             <td>
-                                <input type="number" id="empires" name="empires" size="4">
+                                <input type="number" id="empires" name="empires" size="4" min="0">
                             </td>
                         </tr>
                         <tr>
                             <td>Number of iterations:</td>
                             <td>
-                                <input type="number" id="iterations-number" name="iterations-number" size="4">
+                                <input type="number" id="iterations-number" name="iterations-number" size="4" min="0">
                             </td>
                         </tr>
                         <tr>
                             <td>Alpha:</td>
                             <td>
-                                <input type="number" id="alpha" name="alpha" size="4">
+                                <input type="number" id="alpha" name="alpha" size="4" step="0.1" min="0">
                             </td>
                         </tr>
                         <tr>
                             <td>Beta:</td>
                             <td>
-                                <input type="number" id="beta" name="beta" size="2">
+                                <input type="number" id="beta" name="beta" size="2" step="0.4" min="0">
                             </td>
                         </tr>
                         <tr>
                             <td>Gamma:</td>
                             <td>
-                                <input type="number" id="gamma" name="gamma" size="4">
+                                <input type="number" id="gamma" name="gamma" size="4" step="0.087" min="0" max="3.14">
                             </td>
                         </tr>
                         <tr>

@@ -173,10 +173,13 @@ function* GetData(config) {
         const widthMultiplier = WIDTH / (range.x.stop - range.x.start);
         const heightMultipler = HEIGHT / (range.y.stop - range.y.start);
         const nationsMapped = nations.map( n => {
-            let result = {x: widthMultiplier * (n.x - range.x.start),
+            let result = {
+                x: widthMultiplier * (n.x - range.x.start),
                 y: heightMultipler * (n.y - range.y.start),
                 value: n.val,
-                id: n.id
+                id: n.id,
+                realX: n.x,
+                realY: n.y
             }
             if(IsColony(n)) {
                 let i = colonies.indexOf(n)
@@ -185,7 +188,6 @@ function* GetData(config) {
                 result.colonies = null
             }
             else {
-                let i = empires.indexOf(n)
                 result.color = MakeColorDarker(n.color)
                 result.colonies = GetColoniesFromEmpire(n, colonies)
                 result.r = GetRadius(result.colonies.length, colonies.length, METRO_BASE_RADIUS, METRO_ADD_RADIUS)
