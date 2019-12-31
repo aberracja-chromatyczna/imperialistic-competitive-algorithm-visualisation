@@ -1,5 +1,4 @@
 const HEIGHT = 900, WIDTH = 900; // visualisation size
-const AVG_VAL_HEIGHT = 400; AVG_VAL_WIDTH = 600; // avg value size
 const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
@@ -15,12 +14,15 @@ const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)
     .attr("height", HEIGHT)
-const avgSvg = d3.select("#avg-value-container")
-.append("svg")
-.attr("width", AVG_VAL_WIDTH)
-.attr("height", AVG_VAL_HEIGHT)
+function Mean(values) {
+    return values.reduce( (acc, cur) => acc + cur, 0) / values.length;
+}
 function UpdateData(newData) {
     iter++
+    avgs.push( Mean( newData.map( n => n.value ) ) )
+    const dataForPlot = avgs.map( (avg,i) => { return { x: i/4 + 1, y: avg } } )
+    console.log(dataForPlot)
+    UpdateAvg( dataForPlot )
     const circle = svg.selectAll("circle").data(newData);
     circle.exit().remove();
     circle.enter().append("circle")
@@ -42,17 +44,17 @@ function UpdateLabels(newInfo) {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
     });
-    d3.select("#iteration").text( IntegerFormatter.format(iter/4 + 1))
-    d3.select("#empires-alive").text( newInfo.length )
-    const optimum = newInfo.reduce( (acc,cur) => acc.value > cur.value ? cur : acc, newInfo[0] )
-    d3.select("#best-empire-color").html( ColorBox(optimum.color) )
+    d3.select("#iteration").text(IntegerFormatter.format(iter / 4 + 1))
+    d3.select("#empires-alive").text(newInfo.length)
+    const optimum = newInfo.reduce((acc, cur) => acc.value > cur.value ? cur : acc, newInfo[0])
+    d3.select("#best-empire-color").html(ColorBox(optimum.color))
     const args = `(${FloatFormatter.format(optimum.realX)},${FloatFormatter.format(optimum.realY)})`
-    d3.select("#optimum-args").text( args )
-    d3.select("#found-optimum").text( FloatFormatter.format(optimum.value) )
-    
+    d3.select("#optimum-args").text(args)
+    d3.select("#found-optimum").text(FloatFormatter.format(optimum.value))
+
 }
 function UpdateInfo(newInfo) {
-    
+
     const header = `<b>Empires (${newInfo.length}):</b> <br> `;
     const info = header.concat(newInfo.map((nation) => `${ColorBox(nation.color)} 
     colonies: ${nation.colonies.length} 
@@ -91,7 +93,7 @@ function GetConfig() {
     const BETA = GetById("beta").value
     const GAMMA = GetById("gamma").value
     const RANGE = defaultConfig.RANGE
-    const config = {N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE}
+    const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE }
     return config;
 }
 let intId = null;
@@ -115,15 +117,15 @@ function Reset() {
     intId = null;
     iter = 0
     avgs = []
-    Data = GetData(config);  
+    Data = GetData(config);
     Resume();
 }
 const MAX_DELAY = -1 * document.getElementById("Delay").min;
 function UpdateDelayLabel() {
     d3.select("#DelayDisplay").text(`Speed: ${MAX_DELAY - DELAY}`)
-} 
+}
 function ChangeDelay() {
-    DELAY = -1 * this.value 
+    DELAY = -1 * this.value
     UpdateDelayLabel();
     Stop()
     Resume()
