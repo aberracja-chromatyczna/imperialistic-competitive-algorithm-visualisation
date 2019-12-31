@@ -1,3 +1,9 @@
+:root {
+  --fun-container-size: 900px;
+  --right-plot-width: 600px;
+  --right-column-width: 250px;
+}
+
 .bordered {
   border-style: solid;
   
@@ -12,10 +18,19 @@ table td, table th {
   text-align: left;
   border-bottom: 1px solid #CCC;
 }
+.right-column-table {
+  text-align: right;
+  width: var(--right-column-width)
+}
 .big-btn {
   width: 250px;
   height: 60px;
   font-size: 30px;
+}
+.right-table-btn {
+  width: var(--right-column-width) - 20px;
+  height: 50px;
+  font-size: 20px;
 }
 .wrapper {
   display: flex;
@@ -26,8 +41,8 @@ table td, table th {
   overflow: auto;
 }
 #fun-container {
-  width: 900px;  /* Or whatever */
-  height: 900px; /* Or whatever */
+  width: var(--fun-container-size);
+  height: var(--fun-container-size);
 }
 /* #parameters-wrapper {
   float: right
@@ -38,10 +53,7 @@ table td, table th {
   font-size: 20px;
 }
 #controls-container {
-  /* display:inline-block; */
-  margin-left: 8px;
-  
-
+  margin-left: 8px; 
 }
 .color-box {
   display: inline;
@@ -51,6 +63,8 @@ table td, table th {
 }
 input[type=number]{
   width: 80px;
+  height: 30px;
+  font-size: 20px;
 }
 
 .bubbles {
