@@ -2,6 +2,10 @@
   border-style: solid;
   
 }
+#avg-value-container {
+  margin-left: 8px;
+  display: inline-block;
+}
 table td, table th {
   font-size: 20px;
   padding: 0 5px;
@@ -9,29 +13,29 @@ table td, table th {
   border-bottom: 1px solid #CCC;
 }
 .big-btn {
-  width: 160px;
+  width: 250px;
   height: 60px;
   font-size: 30px;
 }
 .wrapper {
-  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .right-side-wrapper {
   overflow: auto;
 }
 #fun-container {
-  float:left;
-  
-  /* display: inline-block; */
+  width: 900px;  /* Or whatever */
+  height: 900px; /* Or whatever */
 }
-#parameters-wrapper {
+/* #parameters-wrapper {
   float: right
-}
+} */
 #info-container {
-  /* display:inline-block; */
-  margin-left: 8px;
+  display:inline-block;
+  margin: 8px;
   font-size: 20px;
-  float: left;
 }
 #controls-container {
   /* display:inline-block; */

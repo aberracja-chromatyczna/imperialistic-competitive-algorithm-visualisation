@@ -1,4 +1,5 @@
-const HEIGHT = 900, WIDTH = 900;
+const HEIGHT = 900, WIDTH = 900; // visualisation size
+const AVG_VAL_HEIGHT = 400; AVG_VAL_WIDTH = 600; // avg value size
 const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
@@ -14,6 +15,10 @@ const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)
     .attr("height", HEIGHT)
+const avgSvg = d3.select("#avg-value-container")
+.append("svg")
+.attr("width", AVG_VAL_WIDTH)
+.attr("height", AVG_VAL_HEIGHT)
 function UpdateData(newData) {
     iter++
     const circle = svg.selectAll("circle").data(newData);
