@@ -121,31 +121,16 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
     let colonies = sorted.slice(0, NumberOfColonies);
     AssignColonyMetropolisRelation();
     yield nations;
-    ShowArray(colonies, "kolonie")
-    ShowArray(empires, "imperia")
     for (let i = 0; i < iterations; i++) {
         Assimilate();
         empires.sort(sortNations);
         colonies.sort(sortNations);
         yield nations;
-
-        console.log("przed updejtach")
-        ShowArray(colonies, "kolonie")
-        ShowArray(empires, "imperia")
-
         UpdateColonyMetropolisRelation();
-        console.log("po updejtach")
-        ShowArray(colonies, "kolonie")
-        ShowArray(empires, "imperia")
         RemoveEmpiresWithoutColonies();
         if(empires.length == 1) {
             break;
         }
-
-        console.log("po wszystkim")
-        ShowArray(colonies, "kolonie")
-        ShowArray(empires, "imperia")
-
         ImperialisticCompetition();  
         empires.sort(sortNations);
         colonies.sort(sortNations);
