@@ -30,7 +30,7 @@ function GetRandomFromArrayWithProbabilites(results, weights) {
     return results[lastIndex];
 };
 function Show(a) {
-    console.log(a.id, a.val, a.metropolis);
+    console.log(a.id, a.val, a.metropolis, a.realX, a.realY, a.value);
 }
 function ShowArray(a, label) {
     console.log(label);

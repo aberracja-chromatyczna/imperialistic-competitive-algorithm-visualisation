@@ -36,12 +36,15 @@ svg.append("g")
 function Mean(values) {
     return values.reduce((acc, cur) => acc + cur, 0) / values.length;
 }
+const MapDataForPlot = data => data.map((val, i) => { return { x: i / 4 + 1, y: val } })
 function UpdateData(newData, range) {
     iter++
-    avgs.push(Mean(newData.map(n => n.value)))
-    const dataForPlot = avgs.map((avg, i) => { return { x: i / 4 + 1, y: avg } })
-    console.log(dataForPlot)
-    UpdateAvg(dataForPlot)
+    const values = newData.map(n => n.value)
+    avgs.push(Mean(values))
+    bests.push(Miniumum(values))
+    const dataForPlot = MapDataForPlot(avgs)
+    const dataBestsForPlot = MapDataForPlot(bests)
+    UpdateAvg(dataForPlot,dataBestsForPlot)
     const circle = svg.selectAll("circle").data(newData);
     circle.exit().remove();
     circle.enter().append("circle")
@@ -89,7 +92,8 @@ function UpdateInfo(newInfo) {
     const header = `<b>Empires (${newInfo.length}):</b> <br> `;
     const info = header.concat(newInfo.map((nation) => `${ColorBox(nation.color)} 
     colonies: ${nation.colonies.length} 
-    value: ${FloatFormatter.format(nation.value)} <br>`).join(""))
+    value: ${FloatFormatter.format(nation.value)} <br>
+    `).join(""))
     document.getElementById("info-container").innerHTML = info
 
     UpdateLabels(newInfo);
@@ -104,6 +108,7 @@ function DoSth() {
     const nations = val.nations;
     const newInfo = nations.filter(n => n.colonies !== null)
     newInfo.sort((a, b) => b.colonies.length - a.colonies.length)
+    ShowArray(newInfo, iter)
     UpdateInfo(newInfo)
     UpdateData(nations, val.range);
 }
@@ -131,6 +136,7 @@ let intId = null;
 let iter = 0
 let Data;
 let avgs = []
+let bests = []
 const SetStateButtonText = text => document.getElementById("State").innerText = text
 function Resume() {
     intId = setInterval(DoSth, DELAY);
@@ -148,6 +154,7 @@ function Reset() {
     intId = null;
     iter = 0
     avgs = []
+    bests = []
     Data = GetData(config);
     Resume();
 }
