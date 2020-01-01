@@ -2,6 +2,7 @@
   --fun-container-size: 900px;
   --right-plot-width: 600px;
   --right-column-width: 250px;
+  --middle-container-width: 294.44px;
 }
 
 .bordered {
@@ -17,12 +18,18 @@ table td, table th {
   text-align: left;
   border-bottom: 1px solid #CCC;
 }
+.info-table {
+  width: 145px;
+}
 .right-column-table {
   text-align: right;
   width: var(--right-column-width)
 }
+.middle-container {
+  width: var(--middle-container-width);
+}
 .big-btn {
-  width: 250px;
+  width: var(--middle-container-width);
   height: 60px;
   font-size: 30px;
 }

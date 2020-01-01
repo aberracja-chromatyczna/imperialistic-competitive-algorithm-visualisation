@@ -35,7 +35,7 @@ function UpdateData(newData) {
         .style("fill", d => d.color)
 }
 const FloatFormatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 4,
     maximumFractionDigits: 4,
 });
 const ColorBox = color => `<p class="color-box" style="background-color:${color};">⠀⠀⠀</p>`
