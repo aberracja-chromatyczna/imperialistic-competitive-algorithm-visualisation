@@ -2,9 +2,6 @@ const AVG_VAL_HEIGHT = 400; AVG_VAL_WIDTH = 600; // avg value size
 const MARGIN = { top: 10, right: 20, bottom: 30, left: 20 };
 const AXIS_W = AVG_VAL_WIDTH - MARGIN.left - MARGIN.right, AXIS_H = AVG_VAL_HEIGHT - MARGIN.top - MARGIN.bottom;
 
-const tempData = Array.from({ length: 100 }, (_, i) => { return { x: i, y: 10 - 0.2 * i } })
-const tempData2 = Array.from({ length: 100 }, (_, i) => { return { x: i, y: 10 - 0.1 * i } })
-
 const avgSvg = d3.select("#avg-value-container")
     .append("svg")
     .attr("width", AVG_VAL_WIDTH)

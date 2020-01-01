@@ -72,6 +72,14 @@ input[type=number]{
   height: 30px;
   font-size: 20px;
 }
+.yaxis-bubble {
+  font-size: 20px;
+  stroke-width: 2px;
+}
+.xaxis-bubble {
+  font-size: 20px;
+  stroke-width: 2px;
+}
 
 .bubbles {
     stroke-width: 1px;

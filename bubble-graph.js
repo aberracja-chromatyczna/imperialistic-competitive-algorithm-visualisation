@@ -1,4 +1,8 @@
 const HEIGHT = 900, WIDTH = 900; // visualisation size
+const AXIS_MARGIN = 50;
+const RANGE_MULTIPLIER = (HEIGHT - 2 * AXIS_MARGIN) / HEIGHT;
+const X_AXIS_BUBBLE = AXIS_MARGIN, Y_AXIS_BUBBLE = WIDTH - AXIS_MARGIN;
+
 const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
@@ -14,15 +18,30 @@ const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)
     .attr("height", HEIGHT)
+const BASE_RANGE_BUBBLE_X = [-10, 10], BASE_RANGE_BUBBLE_Y = [-10, 10]
+const xAxisBubbles = d3.scaleLinear()
+    .domain(BASE_RANGE_BUBBLE_X)
+    .range([AXIS_MARGIN, WIDTH - AXIS_MARGIN]);
+const yAxisBubbles = d3.scaleLinear()
+    .domain(BASE_RANGE_BUBBLE_Y)
+    .range([AXIS_MARGIN, HEIGHT - AXIS_MARGIN]);
+svg.append("g")
+    .attr("class", "yaxis-bubble")
+    .attr("transform", `translate(${X_AXIS_BUBBLE},0)`)
+    .call(d3.axisLeft(yAxisBubbles));
+svg.append("g")
+    .attr("class", "xaxis-bubble")
+    .attr("transform", `translate(0,${Y_AXIS_BUBBLE})`)
+    .call(d3.axisBottom(xAxisBubbles));
 function Mean(values) {
-    return values.reduce( (acc, cur) => acc + cur, 0) / values.length;
+    return values.reduce((acc, cur) => acc + cur, 0) / values.length;
 }
-function UpdateData(newData) {
+function UpdateData(newData, range) {
     iter++
-    avgs.push( Mean( newData.map( n => n.value ) ) )
-    const dataForPlot = avgs.map( (avg,i) => { return { x: i/4 + 1, y: avg } } )
+    avgs.push(Mean(newData.map(n => n.value)))
+    const dataForPlot = avgs.map((avg, i) => { return { x: i / 4 + 1, y: avg } })
     console.log(dataForPlot)
-    UpdateAvg( dataForPlot )
+    UpdateAvg(dataForPlot)
     const circle = svg.selectAll("circle").data(newData);
     circle.exit().remove();
     circle.enter().append("circle")
@@ -33,6 +52,18 @@ function UpdateData(newData) {
         .attr("cx", d => d.x)
         .attr("cy", d => d.y)
         .style("fill", d => d.color)
+
+    const rangeX = RangeToArray(range.x).map( a => a * RANGE_MULTIPLIER)
+    const rangeY = RangeToArray(range.y).map( a => a * RANGE_MULTIPLIER)
+    const AXIS_DELAY = 100
+    yAxisBubbles.domain(rangeY);
+    xAxisBubbles.domain(rangeX);
+    svg.selectAll("g.yaxis-bubble")
+        .transition().duration(AXIS_DELAY)
+        .call(d3.axisLeft(yAxisBubbles))
+    svg.selectAll("g.xaxis-bubble")
+        .transition().duration(AXIS_DELAY)
+        .call(d3.axisBottom(xAxisBubbles))
 }
 const FloatFormatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 4,
@@ -74,7 +105,7 @@ function DoSth() {
     const newInfo = nations.filter(n => n.colonies !== null)
     newInfo.sort((a, b) => b.colonies.length - a.colonies.length)
     UpdateInfo(newInfo)
-    UpdateData(nations);
+    UpdateData(nations, val.range);
 }
 
 function SetDefaultValueConfigs() {

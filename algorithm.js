@@ -200,7 +200,7 @@ function* GetData(config) {
     console.log(config)
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
-    const METRO_ADD_RADIUS = 100;
+    const METRO_ADD_RADIUS = 150;
     const imperial = Imperial(RANGE, N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA);
     let next = imperial.next();
     let range = RANGE;
