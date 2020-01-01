@@ -1,2 +1,5 @@
-Imperialistic algorhitm visualistion.
-Just run index.html
+# Imperialistic algorhitm visualistion.
+https://en.wikipedia.org/wiki/Imperialist_competitive_algorithm
+
+## How to run
+https://tomsiemek.github.io/imperialistic-competitive-algorithm-visualisation/
