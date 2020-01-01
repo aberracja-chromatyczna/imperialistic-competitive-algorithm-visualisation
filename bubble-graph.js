@@ -12,7 +12,8 @@ const defaultConfig = {
     ITERATIONS: 1000,
     ALPHA: 0.5,
     BETA: 2,
-    GAMMA: 0.1 * Math.PI
+    GAMMA: 0.1 * Math.PI,
+    RESCALE: 'rescale-empires'
 }
 const svg = d3.select("#fun-container")
     .append("svg")
@@ -120,6 +121,18 @@ function SetDefaultValueConfigs() {
     document.getElementById("alpha").value = defaultConfig.ALPHA
     document.getElementById("beta").value = defaultConfig.BETA
     document.getElementById("gamma").value = FloatFormatter.format(defaultConfig.GAMMA)
+    GetById("rescale-never").checked = false
+    GetById("rescale-empires").checked = false
+    GetById("rescale-nations").checked = false
+    GetById(defaultConfig.RESCALE).checked = true
+}
+const CreateObject = (obj) => {
+    return obj;
+}
+function GetRescalingValue() {
+    const rescaleValues = [ "rescale-never", "rescale-empires", "rescale-nations" ]
+        .map( value => CreateObject({value, checked: GetById(value).checked}))
+    return rescaleValues.find( value => value.checked === true ).value
 }
 function GetConfig() {
     const N = GetById("nations").value
@@ -129,7 +142,9 @@ function GetConfig() {
     const BETA = GetById("beta").value
     const GAMMA = GetById("gamma").value
     const RANGE = defaultConfig.RANGE
-    const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE }
+    const RESCALE = GetRescalingValue()
+    console.log(RESCALE)
+    const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE, RESCALE }
     return config;
 }
 let intId = null;

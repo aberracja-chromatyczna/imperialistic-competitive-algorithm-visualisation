@@ -196,7 +196,16 @@ function* GetData(config) {
         })
         return {nations: nationsMapped, range};
     }
-    const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA} = config;
+    function DetermineRange(empires, colonies) {
+        if(RESCALE === "rescale-never") {
+            return RANGE;
+        }
+        if(RESCALE === "rescale-empires") {
+            return GetRange(empires)
+        }
+        return GetRange(colonies)
+    }
+    const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA, RESCALE} = config;
     console.log(config)
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
@@ -209,7 +218,7 @@ function* GetData(config) {
         const colonies = GetColonies(nations).sort(sortNations);
         const empires = GetEmpires(nations).sort(sortNations);
         yield MapDots(nations,empires, colonies, range)
-        range = GetRange(empires);
+        range = DetermineRange(empires, colonies)
         yield MapDots(nations,empires, colonies, range) // updated scale
         next = imperial.next();
     }
