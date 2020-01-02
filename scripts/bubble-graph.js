@@ -73,6 +73,15 @@ const FloatFormatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 4,
     maximumFractionDigits: 4,
 });
+const MAX_VAL = 100
+const MIN_VAL = 0.00001
+const FormatValues = val => {
+    const absoluteVal = math.abs(val)
+    if(absoluteVal > MAX_VAL || absoluteVal < MIN_VAL ) {
+        return Number.parseFloat(val).toExponential(2)
+    }
+    return FloatFormatter.format(val)
+}
 const ColorBox = color => `<p class="color-box" style="background-color:${color};">⠀⠀⠀</p>`
 function UpdateLabels(newInfo) {
     const IntegerFormatter = new Intl.NumberFormat('en-US', {
@@ -83,9 +92,9 @@ function UpdateLabels(newInfo) {
     d3.select("#empires-alive").text(newInfo.length)
     const optimum = newInfo.reduce((acc, cur) => acc.value > cur.value ? cur : acc, newInfo[0])
     d3.select("#best-empire-color").html(ColorBox(optimum.color))
-    const args = `(${FloatFormatter.format(optimum.realX)},${FloatFormatter.format(optimum.realY)})`
+    const args = `(${FormatValues(optimum.realX)},${FormatValues(optimum.realY)})`
     d3.select("#optimum-args").text(args)
-    d3.select("#found-optimum").text(FloatFormatter.format(optimum.value))
+    d3.select("#found-optimum").text(FormatValues(optimum.value))
 
 }
 function UpdateInfo(newInfo) {
@@ -93,7 +102,7 @@ function UpdateInfo(newInfo) {
     const header = `<b>Empires (${newInfo.length}):</b> <br> `;
     const info = header.concat(newInfo.map((nation) => `${ColorBox(nation.color)} 
     colonies: ${nation.colonies.length} 
-    value: ${FloatFormatter.format(nation.value)} <br>
+    value: ${FormatValues(nation.value)} <br>
     `).join(""))
     document.getElementById("info-container").innerHTML = info
 
@@ -109,7 +118,6 @@ function DoSth() {
     const nations = val.nations;
     const newInfo = nations.filter(n => n.colonies !== null)
     newInfo.sort((a, b) => b.colonies.length - a.colonies.length)
-    ShowArray(newInfo, iter)
     UpdateInfo(newInfo)
     UpdateData(nations, val.range);
 }
@@ -119,11 +127,12 @@ function SetRange(range) {
     GetById("minY").value = range.y.start
     GetById("maxY").value = range.y.stop
 }
+const MAX_RANGE = RangeXY(-1000,1000,-1000,1000)
 function GetRange() {
-    const minX = Number.parseFloat(GetById("minX").value)
-    const maxX = Number.parseFloat(GetById("maxX").value)
-    const minY = Number.parseFloat(GetById("minY").value)
-    const maxY = Number.parseFloat(GetById("maxY").value)
+    const minX = Relaxation(Number.parseFloat(GetById("minX").value), MAX_RANGE.x)
+    const maxX = Relaxation(Number.parseFloat(GetById("maxX").value), MAX_RANGE.x)
+    const minY = Relaxation(Number.parseFloat(GetById("minY").value), MAX_RANGE.y)
+    const maxY = Relaxation(Number.parseFloat(GetById("maxY").value), MAX_RANGE.y)
     return RangeXY(minX, maxX, minY, maxY)
 }
 function SetDefaultValueConfigs() {

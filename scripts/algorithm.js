@@ -18,6 +18,15 @@ let F = (x, y) => {
 const sortNations = (a, b) => b.val - a.val;
 const findMinimumReducer = (acc, cur) => acc > cur ? cur : acc;
 const findMaximumReducer = (acc, cur) => acc < cur ? cur : acc;
+function Relaxation(x, domain) {
+    if(x < domain.start) {
+        return domain.start
+    }
+    if( x > domain.stop) {
+        return domain.stop
+    }
+    return x
+}
 function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, beta = 2, gamma = 0.01 * Math.PI) {
     function FindMetropolis(colony) {
         return empires.find(e => e.id == colony.metropolis);
@@ -82,15 +91,6 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
     function Translate(c, vector) {
         c.x += vector.x;
         c.y += vector.y;
-    }
-    function Relaxation(x, domain) {
-        if(x < domain.start) {
-            return domain.start
-        }
-        if( x > domain.stop) {
-            return domain.stop
-        }
-        return x
     }
     function RestrainToSearchDomain(c) {
         c.x = Relaxation(c.x, range.x)
