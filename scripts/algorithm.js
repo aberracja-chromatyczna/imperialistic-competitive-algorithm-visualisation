@@ -83,6 +83,19 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         c.x += vector.x;
         c.y += vector.y;
     }
+    function Relaxation(x, domain) {
+        if(x < domain.start) {
+            return domain.start
+        }
+        if( x > domain.stop) {
+            return domain.stop
+        }
+        return x
+    }
+    function RestrainToSearchDomain(c) {
+        c.x = Relaxation(c.x, range.x)
+        c.y = Relaxation(c.y, range.y)
+    }
     function Assimilate() {
         colonies.forEach(c => {
             const metropolis = FindMetropolis(c);
@@ -90,6 +103,7 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
             const d = { x: (metropolis.x - c.x) * BetaMultiplier, y: (metropolis.y - c.y) * BetaMultiplier };
             const angle = RandomFromRange({ start: -gamma, stop: gamma });
             Translate(c, Rotate(d, angle));
+            RestrainToSearchDomain(c)
             c.val = F(c.x, c.y);
         })
     }
