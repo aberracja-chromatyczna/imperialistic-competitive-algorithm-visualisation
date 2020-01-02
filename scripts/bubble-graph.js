@@ -119,6 +119,13 @@ function SetRange(range) {
     GetById("minY").value = range.y.start
     GetById("maxY").value = range.y.stop
 }
+function GetRange() {
+    const minX = Number.parseFloat(GetById("minX").value)
+    const maxX = Number.parseFloat(GetById("maxX").value)
+    const minY = Number.parseFloat(GetById("minY").value)
+    const maxY = Number.parseFloat(GetById("maxY").value)
+    return RangeXY(minX, maxX, minY, maxY)
+}
 function SetDefaultValueConfigs() {
     document.getElementById("nations").value = defaultConfig.N
     document.getElementById("empires").value = defaultConfig.N_EMPIRES
@@ -148,12 +155,14 @@ function GetConfig() {
     const ALPHA = GetById("alpha").value
     const BETA = GetById("beta").value
     const GAMMA = GetById("gamma").value
-    const RANGE = TestFunctions[0].range
+    const RANGE = GetRange()
     const RESCALE = GetRescalingValue()
     const FORMULA = GetFormula().toLowerCase()
     const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE, RESCALE, FORMULA }
+    console.log(config)
     return config;
 }
+
 let intId = null;
 let iter = 0
 let Data;
