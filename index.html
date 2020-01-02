@@ -109,11 +109,45 @@
                         <td class="right-column-table">
                             <input id="rescale-never" type="radio" name="rescale" value="never"> never
                             <br>
-                            <input id="rescale-empires" type="radio" name="rescale" value="empires" > based on empires
+                            <input id="rescale-empires" type="radio" name="rescale" value="empires"> based on empires
                             <br>
                             <input id="rescale-nations" type="radio" name="rescale" value="nations"> based on all nations
                             <br>
                             <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Function:</td>
+                        <td class="right-column-table">
+                            <select class="functions-input" id="functions-select">
+                                <option value="Rastrigin">Rastrigin</option>
+                                <option value="Ackley">Ackley</option>
+                                <option value="Sphere">Sphere</option>
+                                <option value="Rosenbrock">Rosenbrock</option>
+                                <option value="Himmelblau">Himmelblau's</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Formula:</td>
+                        <td class="right-column-table">
+                            <input type="text" class="formula"  id="formula">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Search domain:</td>
+                        <td class="right-column-table">
+                            <div>
+                                    X:
+                                    <input type="number" id="minX" name="minX" size="4" step="0.5" min="-100" max="100">
+                                    <input type="number" id="maxX" name="maxX" size="4" step="0.5" min="-100" max="100">
+                            </div>
+                            <div>
+                                    Y:
+                                    <input type="number" id="minY" name="minY" size="4" step="0.5" min="-100" max="100">
+                                    <input type="number" id="maxY" name="maxY" size="4" step="0.5" min="-100" max="100">
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -129,13 +163,14 @@
             </div>
         </div>
     </div>
-
-    <script src='https://d3js.org/d3.v4.min.js'></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script src='./helper.js'></script>
-    <script src='./algorithm.js'></script>
-    <script src='./avg-graph.js'></script>
-    <script src='./bubble-graph.js'></script>
+    <script src='./lib/math.min.js'></script>  
+    <script src='./lib/d3.v4.min.js'></script>  
+    <script src='./scripts/helper.js'></script>
+    <script src='./scripts/functions.js'></script>
+    <script src='./scripts/algorithm.js'></script>
+    <script src='./scripts/avg-graph.js'></script>
+    <script src='./scripts/bubble-graph.js'></script>
+    
 </body>
 
 </html>

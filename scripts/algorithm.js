@@ -11,7 +11,7 @@ function GenerateNations(N, range) {
     }
     return Array.from({ length: N }, (v, i) => GenerateNation(i));
 }
-function F(x, y) {
+let F = (x, y) => {
     //return x ** 2 + y ** 2;
     return 10 * 2 + x ** 2 + y ** 2 - 10 * Math.cos(2 * Math.PI * x) - 10 * Math.cos(2 * Math.PI * y);
 }
@@ -205,11 +205,11 @@ function* GetData(config) {
         }
         return GetRange(colonies)
     }
-    const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA, RESCALE} = config;
-    console.log(config)
+    const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA, RESCALE, FORMULA} = config;
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
     const METRO_ADD_RADIUS = 150;
+    F = CreateFunction(FORMULA)
     const imperial = Imperial(RANGE, N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA);
     let next = imperial.next();
     let range = RANGE;

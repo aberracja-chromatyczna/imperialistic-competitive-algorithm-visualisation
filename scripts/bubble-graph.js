@@ -6,12 +6,12 @@ const X_AXIS_BUBBLE = AXIS_MARGIN, Y_AXIS_BUBBLE = WIDTH - AXIS_MARGIN;
 const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
-    N: 400,
-    N_EMPIRES: 30,
+    N: 100,
+    N_EMPIRES: 10,
     RANGE: RangeXY(-10, 10, -10, 10),
     ITERATIONS: 1000,
     ALPHA: 0.5,
-    BETA: 2,
+    BETA: 1,
     GAMMA: 0.1 * Math.PI,
     RESCALE: 'rescale-empires'
 }
@@ -113,7 +113,12 @@ function DoSth() {
     UpdateInfo(newInfo)
     UpdateData(nations, val.range);
 }
-
+function SetRange(range) {
+    GetById("minX").value = range.x.start
+    GetById("maxX").value = range.x.stop
+    GetById("minY").value = range.y.start
+    GetById("maxY").value = range.y.stop
+}
 function SetDefaultValueConfigs() {
     document.getElementById("nations").value = defaultConfig.N
     document.getElementById("empires").value = defaultConfig.N_EMPIRES
@@ -125,6 +130,8 @@ function SetDefaultValueConfigs() {
     GetById("rescale-empires").checked = false
     GetById("rescale-nations").checked = false
     GetById(defaultConfig.RESCALE).checked = true
+    SetFunctionToDefault()
+    SetFormula()
 }
 const CreateObject = (obj) => {
     return obj;
@@ -141,10 +148,10 @@ function GetConfig() {
     const ALPHA = GetById("alpha").value
     const BETA = GetById("beta").value
     const GAMMA = GetById("gamma").value
-    const RANGE = defaultConfig.RANGE
+    const RANGE = TestFunctions[0].range
     const RESCALE = GetRescalingValue()
-    console.log(RESCALE)
-    const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE, RESCALE }
+    const FORMULA = GetFormula().toLowerCase()
+    const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE, RESCALE, FORMULA }
     return config;
 }
 let intId = null;
@@ -191,9 +198,31 @@ function State() {
         Resume();
     }
 }
+function SetFormula() {
+    const functions = GetById("functions-select")
+    const selected = functions.options[functions.selectedIndex].value;
+    const selectedFunc = TestFunctions.find( e => e.name === selected )
+    if( selectedFunc ) {
+        GetById("formula").value = selectedFunc.formula
+        SetRange( selectedFunc.range )
+    }
+}
+function SetFunctionToDefault() {
+    const functions = GetById("functions-select")
+    functions.options[0].selected = true
+}
+function SetFunctionToCustom() {
+    const functions = GetById("functions-select")
+    functions.options[functions.options.length - 1].selected = true
+}
+function GetFormula() {
+    return GetById("formula").value
+}
 d3.select("#State").on("click", State);
 d3.select("#Reset").on("click", Reset)
 d3.select("#Delay").on("change", ChangeDelay)
 d3.select("#Reset-params").on("click", SetDefaultValueConfigs)
+d3.select("#functions-select").on("change", SetFormula)
+d3.select("#formula").on("input", SetFunctionToCustom)
 SetDefaultValueConfigs();
 Reset();

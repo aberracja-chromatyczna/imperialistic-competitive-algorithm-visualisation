@@ -72,6 +72,16 @@ input[type=number]{
   height: 30px;
   font-size: 20px;
 }
+.functions-input {
+  width: 220px;
+  height: 30px;
+  font-size: 20px;
+}
+.formula {
+  width: 280px;
+  height: 30px;
+  font-size: 15px;
+}
 .yaxis-bubble {
   font-size: 20px;
   stroke-width: 2px;
