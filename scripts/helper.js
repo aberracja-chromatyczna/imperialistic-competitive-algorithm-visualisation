@@ -37,5 +37,8 @@ function ShowArray(a, label) {
     a.forEach(Show);
     console.log("ilosc elementow", a.length)
 }
+function RangeFromArrays(X,Y) {
+    return RangeXY( X[0], X[1], Y[0], Y[1] )
+}
 
 

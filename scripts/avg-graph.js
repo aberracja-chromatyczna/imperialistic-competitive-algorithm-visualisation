@@ -10,6 +10,16 @@ const avgSvg = d3.select("#avg-value-container")
 const baseRangeX = [1, 10]
 const baseRangeY = [0.5, 20]
 const colorAvgPlot = 'green', colorMinPlot = 'blue'
+const IsBeyondNormalDisplay = range => math.abs( range.start ) < MIN_VAL || 
+math.abs(range.stop) < MIN_VAL ||  
+math.abs( range.start ) > MAX_VAL || 
+math.abs(range.stop) > MAX_VAL
+function DetermineFormatForAxes(range) {
+    if( IsBeyondNormalDisplay(range) ) {
+        return d3.format("0.1e")
+    }
+    return null
+}
 //creating axis
 const xAxis = d3.scaleLinear()
     .domain(baseRangeX)
@@ -70,16 +80,17 @@ function UpdateAvg(data, dataBest) {
     const values = data.map(d => d.y)
     const valuesBest = dataBest.map(d => d.y)
     const rangeY = [Miniumum(valuesBest), Maximum(values)]
+    const range = RangeFromArrays(rangeX, rangeY)
     yAxis.domain(rangeY);
     xAxis.domain(rangeX);
     UpdateLine(line, data, PLOT_DELAY) // update avg value plot
     UpdateLine(lineMin, dataBest, PLOT_DELAY) // update best value okit
     avgSvg.selectAll("g.yaxis")
         .transition().duration(PLOT_DELAY)
-        .call(d3.axisLeft(yAxis))
+        .call(d3.axisLeft(yAxis).tickFormat(DetermineFormatForAxes(range.y)))
     avgSvg.selectAll("g.xaxis")
         .transition().duration(PLOT_DELAY)
-        .call(d3.axisBottom(xAxis))
+        .call(d3.axisBottom(xAxis).tickFormat(DetermineFormatForAxes(range.x)))
 
 }
 
