@@ -165,14 +165,17 @@ function* GetData(config) {
         b *= darkifyCoefficient
         return `RGB(${r},${g},${b})` 
     }
-    function GetRange(colonies) {
-        const minX = colonies.map(c => c.x).reduce( findMinimumReducer, colonies[0].x)
-        const minY = colonies.map(c => c.y).reduce( findMinimumReducer, colonies[0].y)
-        const maxX = colonies.map(c => c.x).reduce( findMaximumReducer, colonies[0].x)
-        const maxY = colonies.map(c => c.y).reduce( findMaximumReducer, colonies[0].y)
-        const SPACE_MULTIPLIER = 0
-        const dx = 1//(maxX - minX) * SPACE_MULTIPLIER
-        const dy = 1//(maxY - maxY) * SPACE_MULTIPLIER
+    function GetRange(nations_) {
+        const minX = nations_.map(c => c.x).reduce( findMinimumReducer, nations_[0].x)
+        const minY = nations_.map(c => c.y).reduce( findMinimumReducer, nations_[0].y)
+        const maxX = nations_.map(c => c.x).reduce( findMaximumReducer, nations_[0].x)
+        const maxY = nations_.map(c => c.y).reduce( findMaximumReducer, nations_[0].y)
+        const SPACE_MULTIPLIER = 0.2
+        const deltaX = (maxX - minX)
+        const deltaY =  (maxY - minY)
+        const dx = deltaX > 0 ?  deltaX * SPACE_MULTIPLIER : 0.5 
+        const dy = deltaY > 0 ?  deltaY * SPACE_MULTIPLIER : 0.5
+        console.log(dx,dy)
         return RangeXY(minX - dx , maxX + dx, minY - dy, maxY + dy);
     }
     function GetEmpires(nations) {

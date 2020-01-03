@@ -1,5 +1,5 @@
 const HEIGHT = 900, WIDTH = 900; // visualisation size
-const AXIS_MARGIN = 50;
+const AXIS_MARGIN = 60;
 const RANGE_MULTIPLIER = (HEIGHT - 2 * AXIS_MARGIN) / HEIGHT;
 const X_AXIS_BUBBLE = AXIS_MARGIN, Y_AXIS_BUBBLE = WIDTH - AXIS_MARGIN;
 
@@ -29,7 +29,8 @@ const yAxisBubbles = d3.scaleLinear()
 svg.append("g")
     .attr("class", "yaxis-bubble")
     .attr("transform", `translate(${X_AXIS_BUBBLE},0)`)
-    .call(d3.axisLeft(yAxisBubbles));
+    .call(d3.axisLeft(yAxisBubbles))
+    
 svg.append("g")
     .attr("class", "xaxis-bubble")
     .attr("transform", `translate(0,${Y_AXIS_BUBBLE})`)
@@ -37,6 +38,12 @@ svg.append("g")
 function Mean(values) {
     return values.reduce((acc, cur) => acc + cur, 0) / values.length;
 }
+// function DetermineFormatForAxes(range) {
+//     if( math.abs( range.start ) < MIN_VAL || math.abs(range.start) < MIN_VAL) {
+//         return d3.format("0.1e")
+//     }
+//     return d3.format()
+// }
 const MapDataForPlot = data => data.map((val, i) => { return { x: i / 4 + 1, y: val } })
 function UpdateData(newData, range) {
     iter++
@@ -59,22 +66,24 @@ function UpdateData(newData, range) {
 
     const rangeX = RangeToArray(range.x).map( a => a * RANGE_MULTIPLIER)
     const rangeY = RangeToArray(range.y).map( a => a * RANGE_MULTIPLIER)
-    const AXIS_DELAY = 100
-    yAxisBubbles.domain(rangeY);
-    xAxisBubbles.domain(rangeX);
+    const AXIS_DELAY = 1
+    yAxisBubbles.domain(rangeY).nice();
+    xAxisBubbles.domain(rangeX).nice();
     svg.selectAll("g.yaxis-bubble")
         .transition().duration(AXIS_DELAY)
-        .call(d3.axisLeft(yAxisBubbles))
+        .call(d3.axisLeft(yAxisBubbles).tickFormat(d3.format(".1")))
+        
+        
     svg.selectAll("g.xaxis-bubble")
         .transition().duration(AXIS_DELAY)
-        .call(d3.axisBottom(xAxisBubbles))
+        .call(d3.axisBottom(xAxisBubbles).tickFormat(d3.format(".1")))
 }
 const FloatFormatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 4,
     maximumFractionDigits: 4,
 });
 const MAX_VAL = 100
-const MIN_VAL = 0.00001
+const MIN_VAL = 0.001
 const FormatValues = val => {
     const absoluteVal = math.abs(val)
     if(absoluteVal > MAX_VAL || absoluteVal < MIN_VAL ) {
