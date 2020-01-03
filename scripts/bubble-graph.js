@@ -36,6 +36,38 @@ svg.append("g")
     .attr("class", "xaxis-bubble")
     .attr("transform", `translate(0,${Y_AXIS_BUBBLE})`)
     .call(d3.axisBottom(xAxisBubbles));
+
+const tooltip = d3.select("#fun-container")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "black")
+    .style("border-radius", "5px")
+    .style("padding", "10px")
+    .style("color", "white")
+
+// -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+function showTooltip(d) {
+    const args = `(${FormatValues(d.realX)},${FormatValues(d.realY)})`
+    const divContent = `Id: #${d.id} <br>
+    ${d.colonies == null ? "colony" : `metropolis with ${d.colonies.length} colonies`} <br>
+    f${args} = ${FormatValues(d.value)}
+    `
+    tooltip
+        .style("opacity", 1)
+        .html(divContent)
+        .style("left", (d3.mouse(this)[0] + 30) + "px")
+        .style("top", (d3.mouse(this)[1] + 30) + "px")
+}
+function moveTooltip(d) {
+    tooltip
+        .style("left", (d3.mouse(this)[0] + 30) + "px")
+        .style("top", (d3.mouse(this)[1] + 30) + "px")
+}
+function hideTooltip(d) {
+    tooltip
+        .style("opacity", 0)
+}
 function Mean(values) {
     return values.reduce((acc, cur) => acc + cur, 0) / values.length;
 }
@@ -55,10 +87,15 @@ function UpdateData(newData, range) {
         .merge(circle)
         .transition()
         .duration(DELAY)
+        .attr("class", "bubbles")
         .attr("r", d => d.r)
         .attr("cx", d => d.x)
         .attr("cy", d => d.y)
         .style("fill", d => d.color)
+    circle.on("mouseover", showTooltip)
+    .on("mousemove", moveTooltip)
+    .on("mouseleave", hideTooltip)
+        
 
     const rangeX = RangeToArray(range.x).map(a => a * RANGE_MULTIPLIER_X)
     const rangeY = RangeToArray(range.y).map(a => a * RANGE_MULTIPLIER_Y)
@@ -106,6 +143,7 @@ function UpdateInfo(newInfo) {
 
     const header = `<b>Empires (${newInfo.length}):</b> <br> `;
     const info = header.concat(newInfo.map((nation) => `${ColorBox(nation.color)} 
+    #${nation.id}
     colonies: ${nation.colonies.length} 
     value: ${FormatValues(nation.value)} <br>
     `).join(""))

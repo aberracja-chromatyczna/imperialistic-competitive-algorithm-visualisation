@@ -4,7 +4,6 @@
   --right-column-width: 250px;
   --middle-container-width: 294.44px;
 }
-
 .bordered {
   border-style: solid;  
 }
@@ -50,13 +49,11 @@ table td, table th {
   width: var(--fun-container-size);
   height: var(--fun-container-size);
 }
-/* #parameters-wrapper {
-  float: right
-} */
 #info-container {
   display:inline-block;
   margin: 8px;
   font-size: 20px;
+  width: 340px;
 }
 #controls-container {
   margin-left: 8px; 
@@ -95,10 +92,13 @@ input[type=number]{
   font-size: 20px;
 }
 .bubbles {
-    stroke-width: 1px;
-    stroke: black;
+    stroke-width: 3px;
+    stroke: white;
     opacity: .8
   }
   .bubbles:hover {
     stroke: black;
+  }
+  .tooltip {
+    position: absolute
   }
