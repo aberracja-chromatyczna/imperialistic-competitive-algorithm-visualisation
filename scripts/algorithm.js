@@ -175,7 +175,6 @@ function* GetData(config) {
         const deltaY =  (maxY - minY)
         const dx = deltaX > 0 ?  deltaX * SPACE_MULTIPLIER : 0.5 
         const dy = deltaY > 0 ?  deltaY * SPACE_MULTIPLIER : 0.5
-        console.log(dx,dy)
         return RangeXY(minX - dx , maxX + dx, minY - dy, maxY + dy);
     }
     function GetEmpires(nations) {

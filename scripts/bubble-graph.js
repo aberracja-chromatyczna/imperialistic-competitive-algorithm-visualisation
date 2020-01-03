@@ -4,7 +4,6 @@ const AXIS_MARGIN_LEFT = 80;
 const RANGE_MULTIPLIER_X = (WIDTH - 2 * AXIS_MARGIN_BOT) / WIDTH;
 const RANGE_MULTIPLIER_Y = (HEIGHT - 2 * AXIS_MARGIN_LEFT) / HEIGHT;
 const X_AXIS_BUBBLE = AXIS_MARGIN_LEFT, Y_AXIS_BUBBLE = WIDTH - AXIS_MARGIN_BOT;
-
 const GetById = id => document.getElementById(id)
 let DELAY = 1500//700;
 const defaultConfig = {
@@ -32,7 +31,7 @@ svg.append("g")
     .attr("class", "yaxis-bubble")
     .attr("transform", `translate(${X_AXIS_BUBBLE},0)`)
     .call(d3.axisLeft(yAxisBubbles))
-    
+
 svg.append("g")
     .attr("class", "xaxis-bubble")
     .attr("transform", `translate(0,${Y_AXIS_BUBBLE})`)
@@ -49,7 +48,7 @@ function UpdateData(newData, range) {
     bests.push(Miniumum(values))
     const dataForPlot = MapDataForPlot(avgs)
     const dataBestsForPlot = MapDataForPlot(bests)
-    UpdateAvg(dataForPlot,dataBestsForPlot)
+    UpdateAvg(dataForPlot, dataBestsForPlot)
     const circle = svg.selectAll("circle").data(newData);
     circle.exit().remove();
     circle.enter().append("circle")
@@ -61,16 +60,16 @@ function UpdateData(newData, range) {
         .attr("cy", d => d.y)
         .style("fill", d => d.color)
 
-    const rangeX = RangeToArray(range.x).map( a => a * RANGE_MULTIPLIER_X)
-    const rangeY = RangeToArray(range.y).map( a => a * RANGE_MULTIPLIER_Y)
+    const rangeX = RangeToArray(range.x).map(a => a * RANGE_MULTIPLIER_X)
+    const rangeY = RangeToArray(range.y).map(a => a * RANGE_MULTIPLIER_Y)
     const AXIS_DELAY = 1
-    yAxisBubbles.domain(rangeY).nice();
-    xAxisBubbles.domain(rangeX).nice();
+    yAxisBubbles.domain(rangeY)//.nice();
+    xAxisBubbles.domain(rangeX)//.nice();
     svg.selectAll("g.yaxis-bubble")
         .transition().duration(AXIS_DELAY)
         .call(d3.axisLeft(yAxisBubbles).tickFormat(DetermineFormatForAxes(range.y)))
-        
-        
+
+
     svg.selectAll("g.xaxis-bubble")
         .transition().duration(AXIS_DELAY)
         .call(d3.axisBottom(xAxisBubbles).tickFormat(DetermineFormatForAxes(range.x)))
@@ -83,7 +82,7 @@ const MAX_VAL = 1000
 const MIN_VAL = 0.001
 const FormatValues = val => {
     const absoluteVal = math.abs(val)
-    if(absoluteVal > MAX_VAL || absoluteVal < MIN_VAL ) {
+    if (absoluteVal > MAX_VAL || absoluteVal < MIN_VAL) {
         return Number.parseFloat(val).toExponential(2)
     }
     return FloatFormatter.format(val)
@@ -133,13 +132,17 @@ function SetRange(range) {
     GetById("minY").value = range.y.start
     GetById("maxY").value = range.y.stop
 }
-const MAX_RANGE = RangeXY(-1000,1000,-1000,1000)
+const MAX_RANGE = RangeXY(-1000, 1000, -1000, 1000)
 function GetRange() {
     const minX = Relaxation(Number.parseFloat(GetById("minX").value), MAX_RANGE.x)
     const maxX = Relaxation(Number.parseFloat(GetById("maxX").value), MAX_RANGE.x)
     const minY = Relaxation(Number.parseFloat(GetById("minY").value), MAX_RANGE.y)
     const maxY = Relaxation(Number.parseFloat(GetById("maxY").value), MAX_RANGE.y)
-
+    SetRange(RangeXY(minX, maxX, minY, maxY))
+    if (minX >= maxX || minY >= maxY) {
+        SetRange(defaultConfig.RANGE)
+        return defaultConfig.RANGE
+    }
     return RangeXY(minX, maxX, minY, maxY)
 }
 function SetDefaultValueConfigs() {
@@ -160,9 +163,9 @@ const CreateObject = (obj) => {
     return obj;
 }
 function GetRescalingValue() {
-    const rescaleValues = [ "rescale-never", "rescale-empires", "rescale-nations" ]
-        .map( value => CreateObject({value, checked: GetById(value).checked}))
-    return rescaleValues.find( value => value.checked === true ).value
+    const rescaleValues = ["rescale-never", "rescale-empires", "rescale-nations"]
+        .map(value => CreateObject({ value, checked: GetById(value).checked }))
+    return rescaleValues.find(value => value.checked === true).value
 }
 function GetConfig() {
     const N = GetById("nations").value
@@ -175,7 +178,6 @@ function GetConfig() {
     const RESCALE = GetRescalingValue()
     const FORMULA = GetFormula().toLowerCase()
     const config = { N, N_EMPIRES, ITERATIONS, ALPHA, BETA, GAMMA, RANGE, RESCALE, FORMULA }
-    console.log(config)
     return config;
 }
 
@@ -226,10 +228,10 @@ function State() {
 function SetFormula() {
     const functions = GetById("functions-select")
     const selected = functions.options[functions.selectedIndex].value;
-    const selectedFunc = TestFunctions.find( e => e.name === selected )
-    if( selectedFunc ) {
+    const selectedFunc = TestFunctions.find(e => e.name === selected)
+    if (selectedFunc) {
         GetById("formula").value = selectedFunc.formula
-        SetRange( selectedFunc.range )
+        SetRange(selectedFunc.range)
     }
 }
 function SetFunctionToDefault() {
