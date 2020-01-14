@@ -1,7 +1,8 @@
-const AVG_VAL_HEIGHT = 400; AVG_VAL_WIDTH = 600; // avg value size
-const MARGIN = { top: 10, right: 20, bottom: 30, left: 40 };
+const AVG_VAL_HEIGHT = 400; AVG_VAL_WIDTH = 600; // rozmiar kontenera na wykres sredniej/minimum
+const MARGIN = { top: 10, right: 20, bottom: 30, left: 40 }; // marginesy
 const AXIS_W = AVG_VAL_WIDTH - MARGIN.left - MARGIN.right, AXIS_H = AVG_VAL_HEIGHT - MARGIN.top - MARGIN.bottom;
 const LEGEND_X = AVG_VAL_WIDTH - 180
+// inicjacja wykresu sredniej/minimum
 const avgSvg = d3.select("#avg-value-container")
     .append("svg")
     .attr("width", AVG_VAL_WIDTH)
@@ -9,18 +10,20 @@ const avgSvg = d3.select("#avg-value-container")
     .append("g").attr("transform", "translate(" + MARGIN.left + "," + MARGIN.top + ")");
 const baseRangeX = [1, 10]
 const baseRangeY = [0.5, 20]
-const colorAvgPlot = 'green', colorMinPlot = 'blue'
-const IsBeyondNormalDisplay = range => math.abs( range.start ) < MIN_VAL || 
-math.abs(range.stop) < MIN_VAL ||  
-math.abs( range.start ) > MAX_VAL || 
-math.abs(range.stop) > MAX_VAL
+const colorAvgPlot = 'green', colorMinPlot = 'blue' // kolory
+// funckja sprawdza czy konieczna jest zmiana wyswietlania liczb na osiach w notacji naukowej na podstawie zakresu
+const IsBeyondNormalDisplay = range => math.abs(range.start) < MIN_VAL ||
+    math.abs(range.stop) < MIN_VAL ||
+    math.abs(range.start) > MAX_VAL ||
+    math.abs(range.stop) > MAX_VAL
+// wyznaczenie formatu liczba na osiach wykresu
 function DetermineFormatForAxes(range) {
-    if( IsBeyondNormalDisplay(range) ) {
+    if (IsBeyondNormalDisplay(range)) {
         return d3.format("0.1e")
     }
     return null
 }
-//creating axis
+// tworzenie osi
 const xAxis = d3.scaleLinear()
     .domain(baseRangeX)
     .range([0, AXIS_W]);
@@ -41,6 +44,7 @@ avgSvg.append("text").attr("class", "legend-text").attr("x", LEGEND_X + 10).attr
     .attr("alignment-baseline", "middle")
 avgSvg.append("text").attr("class", "legend-text").attr("x", LEGEND_X + 10).attr("y", 70).text("found optimum")
     .attr("alignment-baseline", "middle")
+// inicjacja linii wykresu
 function InitLine(svg, color) {
     const line_ = svg.append('g')
         .append("path")
@@ -54,6 +58,7 @@ function InitLine(svg, color) {
         .style("fill", "none")
     return line_
 }
+// funkcja aktualizujaca wykres
 function UpdateLine(line, data, delay) {
     line.datum(data)
         .transition()
@@ -63,17 +68,21 @@ function UpdateLine(line, data, delay) {
             .y(function (d) { return yAxis(+d.y) })
         )
 }
+// inicjalizacja linii wykresu
 const line = InitLine(avgSvg, colorAvgPlot)
 const lineMin = InitLine(avgSvg, colorMinPlot)
+// konwersja formatu zasiegu
 function RangeToArray(range) {
     return [range.start, range.stop]
 }
+// funkcje szukajace ekstremow
 function Miniumum(data) {
     return data.reduce((acc, cur) => acc > cur ? cur : acc, data[0]);
 }
 function Maximum(data) {
     return data.reduce((acc, cur) => acc < cur ? cur : acc, data[0]);
 }
+// funkcja aktualizuje wykres srednich
 function UpdateAvg(data, dataBest) {
     const PLOT_DELAY = 100;
     const rangeX = [1, data[data.length - 1].x]

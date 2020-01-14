@@ -1,12 +1,12 @@
-const HEIGHT = 900, WIDTH = 900; // visualisation size
+const HEIGHT = 900, WIDTH = 900; // rozmiar obszaru wizualizacji
 const AXIS_MARGIN_BOT = 40;
 const AXIS_MARGIN_LEFT = 80;
 const RANGE_MULTIPLIER_X = (WIDTH - 2 * AXIS_MARGIN_BOT) / WIDTH;
 const RANGE_MULTIPLIER_Y = (HEIGHT - 2 * AXIS_MARGIN_LEFT) / HEIGHT;
 const X_AXIS_BUBBLE = AXIS_MARGIN_LEFT, Y_AXIS_BUBBLE = WIDTH - AXIS_MARGIN_BOT;
 const GetById = id => document.getElementById(id)
-let DELAY = 1500//700;
-const defaultConfig = {
+let DELAY = 1500 // bazowe opoznienie miedzy klatkami
+const defaultConfig = { // domyslne parametryh
     N: 100,
     N_EMPIRES: 10,
     RANGE: RangeXY(-10, 10, -10, 10),
@@ -20,6 +20,7 @@ const svg = d3.select("#fun-container")
     .append("svg")
     .attr("width", WIDTH)
     .attr("height", HEIGHT)
+// inicjacja obszaru wizualizacji
 const BASE_RANGE_BUBBLE_X = [-10, 10], BASE_RANGE_BUBBLE_Y = [-10, 10]
 const xAxisBubbles = d3.scaleLinear()
     .domain(BASE_RANGE_BUBBLE_X)
@@ -36,7 +37,7 @@ svg.append("g")
     .attr("class", "xaxis-bubble")
     .attr("transform", `translate(0,${Y_AXIS_BUBBLE})`)
     .call(d3.axisBottom(xAxisBubbles));
-
+// inicjalizacja etykietki panstwa
 const tooltip = d3.select("#fun-container")
     .append("div")
     .style("opacity", 0)
@@ -46,7 +47,7 @@ const tooltip = d3.select("#fun-container")
     .style("padding", "10px")
     .style("color", "white")
 
-// -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+// pokaz etykietke panstwa
 function showTooltip(d) {
     const args = `(${FormatValues(d.realX)},${FormatValues(d.realY)})`
     const divContent = `Id: #${d.id} <br>
@@ -68,11 +69,13 @@ function hideTooltip(d) {
     tooltip
         .style("opacity", 0)
 }
+
 function Mean(values) {
     return values.reduce((acc, cur) => acc + cur, 0) / values.length;
 }
-
+// zmapowanie danych dla wykresu srednich
 const MapDataForPlot = data => data.map((val, i) => { return { x: i / 4 + 1, y: val } })
+// aktualizacja wszystkich danych w danej klatce
 function UpdateData(newData, range) {
     iter++
     const values = newData.map(n => n.value)
@@ -111,12 +114,15 @@ function UpdateData(newData, range) {
         .transition().duration(AXIS_DELAY)
         .call(d3.axisBottom(xAxisBubbles).tickFormat(DetermineFormatForAxes(range.x)))
 }
+// parser liczb zmiennoprzecinkowych
 const FloatFormatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 4,
     maximumFractionDigits: 4,
 });
+// zakres wartosci dla ktorych nie bedzie stosowana notacja naukowa
 const MAX_VAL = 1000
 const MIN_VAL = 0.001
+// sformatowanie liczb zmiennoprzecinkowych
 const FormatValues = val => {
     const absoluteVal = math.abs(val)
     if (absoluteVal > MAX_VAL || absoluteVal < MIN_VAL) {
@@ -124,7 +130,9 @@ const FormatValues = val => {
     }
     return FloatFormatter.format(val)
 }
+// pole z kolorem kraju
 const ColorBox = color => `<p class="color-box" style="background-color:${color};">⠀⠀⠀</p>`
+// aktualizacja danych o wizualizacji w tabelce
 function UpdateLabels(newInfo) {
     const IntegerFormatter = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,
@@ -139,6 +147,7 @@ function UpdateLabels(newInfo) {
     d3.select("#found-optimum").text(FormatValues(optimum.value))
 
 }
+// aktualizacja listy imperiow
 function UpdateInfo(newInfo) {
 
     const header = `<b>Empires (${newInfo.length}):</b> <br> `;
@@ -152,6 +161,7 @@ function UpdateInfo(newInfo) {
     UpdateLabels(newInfo);
 
 }
+// wykonanie jednej klatki 
 function DoSth() {
     const next = Data.next();
     if (next.done) {
@@ -164,13 +174,16 @@ function DoSth() {
     UpdateInfo(newInfo)
     UpdateData(nations, val.range);
 }
+// pobranie zakresu poszukiwan z formularza
 function SetRange(range) {
     GetById("minX").value = range.x.start
     GetById("maxX").value = range.x.stop
     GetById("minY").value = range.y.start
     GetById("maxY").value = range.y.stop
 }
+// maksymalny dopuszczalny zasieg
 const MAX_RANGE = RangeXY(-1000, 1000, -1000, 1000)
+// pobranie zasiegu
 function GetRange() {
     const minX = Relaxation(Number.parseFloat(GetById("minX").value), MAX_RANGE.x)
     const maxX = Relaxation(Number.parseFloat(GetById("maxX").value), MAX_RANGE.x)
@@ -183,6 +196,7 @@ function GetRange() {
     }
     return RangeXY(minX, maxX, minY, maxY)
 }
+// ustawienie domyslnych wartosci wizualizacji
 function SetDefaultValueConfigs() {
     document.getElementById("nations").value = defaultConfig.N
     document.getElementById("empires").value = defaultConfig.N_EMPIRES
@@ -197,14 +211,17 @@ function SetDefaultValueConfigs() {
     SetFunctionToDefault()
     SetFormula()
 }
+// w sumie niepotrzebne...
 const CreateObject = (obj) => {
     return obj;
 }
+// wczytanie ustawien skalowania
 function GetRescalingValue() {
     const rescaleValues = ["rescale-never", "rescale-empires", "rescale-nations"]
         .map(value => CreateObject({ value, checked: GetById(value).checked }))
     return rescaleValues.find(value => value.checked === true).value
 }
+// wczytanie parametrow algorytmu
 function GetConfig() {
     const N = GetById("nations").value
     const N_EMPIRES = GetById("empires").value
@@ -219,16 +236,19 @@ function GetConfig() {
     return config;
 }
 
-let intId = null;
-let iter = 0
-let Data;
-let avgs = []
-let bests = []
+let intId = null; // id dla powtarzanego iterwalu wizualizacji
+let iter = 0 // numer iteracji
+let Data; // objekt generatora wizualizacji
+let avgs = [] // tablica z wartosciami srednimi
+let bests = [] // tablica z najlepszymi wartosciami
+// ustawienie napisu nap przycisku start/stop
 const SetStateButtonText = text => document.getElementById("State").innerText = text
+// wznow wizualizacje
 function Resume() {
     intId = setInterval(DoSth, DELAY);
     SetStateButtonText("STOP")
 }
+// zatrzymaj wizualizacje
 function Stop() {
     clearInterval(intId)
     SetStateButtonText("RESUME")
@@ -255,6 +275,7 @@ function ChangeDelay() {
     Stop()
     Resume()
 }
+// przelacza stan wizualizacji
 function State() {
     if (intId) {
         Stop();
@@ -263,6 +284,7 @@ function State() {
         Resume();
     }
 }
+// ustawienie formuly funkcji
 function SetFormula() {
     const functions = GetById("functions-select")
     const selected = functions.options[functions.selectedIndex].value;
@@ -276,10 +298,12 @@ function SetFunctionToDefault() {
     const functions = GetById("functions-select")
     functions.options[0].selected = true
 }
+// zmiana wybranej funkcji na customowa
 function SetFunctionToCustom() {
     const functions = GetById("functions-select")
     functions.options[functions.options.length - 1].selected = true
 }
+// pobranie formuly funkcji
 function GetFormula() {
     return GetById("formula").value
 }

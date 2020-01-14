@@ -1,22 +1,29 @@
+// zwraca losowy kolor
 function RandomColor() {
     const ColorValues = Array.from( {length: 3}, () => parseInt(Math.random() * 255) );
     const FillString = `RGB(${ColorValues[0]},${ColorValues[1]},${ColorValues[2]})`;
     return FillString;
 }
+// zwraca losowy integer
 function RandomInt(max) {
     return parseInt(Math.random() * max);
 }
+// zwraca 1 lub -1
 function RandomSign() {
     return Math.random() > 0.5 ? 1 : -1; 
 }
+// zwraca losowa liczba z przedzialu
 function RandomFromRange(range) {
     return Math.random() * (Math.abs(range.start) + Math.abs(range.stop)) + range.start;
 } 
+// zwraca obiekt {red, green,blue} z 'rgb(#,#,#'
 function ParseColor(stringColor) {
     const colorArray =  stringColor.match(/\d+/g).map(Number)
     return {r: colorArray[0], g: colorArray[1], b: colorArray[2]}
 }
+// tworzy obiekt zakresu
 const RangeXY = (x1, x2, y1,y2) => {return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } }}
+// zwraca losowy element tablicy na podstawie prawdopodobienstw wystapienie odpowiednich elementow
 function GetRandomFromArrayWithProbabilites(results, weights) {
     var num = Math.random(),
         s = 0,
