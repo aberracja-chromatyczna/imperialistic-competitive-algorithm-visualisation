@@ -12,7 +12,7 @@ function GenerateNations(N, range) {
     }
     return Array.from({ length: N }, (v, i) => GenerateNation(i));
 }
-// optymalizowana funckja - domyslna wartosc
+// optymalizowana funkcja - domyslna wartosc
 let F = (x, y) => {
     //return x ** 2 + y ** 2;
     return 10 * 2 + x ** 2 + y ** 2 - 10 * Math.cos(2 * Math.PI * x) - 10 * Math.cos(2 * Math.PI * y);
