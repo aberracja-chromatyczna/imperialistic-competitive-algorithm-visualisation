@@ -4,100 +4,124 @@
   --right-column-width: 250px;
   --middle-container-width: 294.44px;
 }
+
 .bordered {
-  border-style: solid;  
+  border-style: solid;
 }
+
 #avg-value-container {
   margin-left: 8px;
   display: inline-block;
 }
+
 table td, table th {
   font-size: 20px;
   padding: 0 5px;
   text-align: left;
   border-bottom: 1px solid #CCC;
 }
+
 .info-table {
   width: 160px;
 }
+
 .right-column-table {
   text-align: right;
   width: var(--right-column-width)
 }
+
 .middle-container {
   width: var(--middle-container-width);
 }
+
 .big-btn {
   width: var(--middle-container-width);
   height: 60px;
   font-size: 30px;
 }
+
 .right-table-btn {
   width: var(--right-column-width) - 20px;
   height: 50px;
   font-size: 20px;
 }
+
 .wrapper {
   display: flex;
   flex-direction: row;
 }
+
 .right-side-wrapper {
   overflow: auto;
 }
+
 #fun-container {
   width: var(--fun-container-size);
   height: var(--fun-container-size);
 }
+
 #info-container {
-  display:inline-block;
+  display: inline-block;
   margin: 8px;
   font-size: 20px;
   width: 340px;
 }
+
 #controls-container {
-  margin-left: 8px; 
+  margin-left: 8px;
 }
+
 .color-box {
   display: inline;
 }
+
 #DelayDisplay {
   font-size: 20px;
 }
-input[type=number]{
+
+input[type=number] {
   width: 80px;
   height: 30px;
   font-size: 20px;
 }
+
 .functions-input {
   width: 220px;
   height: 30px;
   font-size: 20px;
 }
+
 .formula {
   width: 280px;
   height: 30px;
   font-size: 15px;
 }
+
 .yaxis-bubble {
   font-size: 20px;
   stroke-width: 2px;
 }
+
 .xaxis-bubble {
   font-size: 20px;
   stroke-width: 2px;
 }
+
 .legend-text {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 20px;
 }
+
 .bubbles {
-    stroke-width: 3px;
-    stroke: white;
-    opacity: .8
-  }
-  .bubbles:hover {
-    stroke: black;
-  }
-  .tooltip {
-    position: absolute
-  }
+  stroke-width: 3px;
+  stroke: white;
+  opacity: .8
+}
+
+.bubbles:hover {
+  stroke: black;
+}
+
+.tooltip {
+  position: absolute
+}

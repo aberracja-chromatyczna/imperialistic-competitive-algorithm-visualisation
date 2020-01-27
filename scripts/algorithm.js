@@ -19,10 +19,10 @@ const sortNations = (a, b) => b.val - a.val;
 const findMinimumReducer = (acc, cur) => acc > cur ? cur : acc;
 const findMaximumReducer = (acc, cur) => acc < cur ? cur : acc;
 function Relaxation(x, domain) {
-    if(x < domain.start) {
+    if (x < domain.start) {
         return domain.start
     }
-    if( x > domain.stop) {
+    if (x > domain.stop) {
         return domain.stop
     }
     return x
@@ -37,7 +37,7 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         return GetRandomFromArrayWithProbabilites(EmpiresIndexes, strengths);
     }
     function GetNormalizedStrengths(empires_ = empires) {
-        const weakestValue = empires_[0].val;       
+        const weakestValue = empires_[0].val;
         const normalized = empires_.map(n => -n.val + weakestValue);
         const sum = normalized.reduce((acc, cur) => acc + cur, 0);
         return normalized.map(n => Math.abs(n / sum));
@@ -71,8 +71,8 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         toDemote.forEach(MakeItToColony)
     }
     function GetOtherMetropolis(empire) {
-        const filterEmpires = empires.filter(emp => emp.id !== empire.id) 
-        const strengths = GetNormalizedStrengths( filterEmpires );
+        const filterEmpires = empires.filter(emp => emp.id !== empire.id)
+        const strengths = GetNormalizedStrengths(filterEmpires);
         const EmpiresIndexes = filterEmpires.map(e => e.id);
         return GetRandomFromArrayWithProbabilites(EmpiresIndexes, strengths);
     }
@@ -119,7 +119,7 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         colonies.push(oldMetro);
     }
     function UpdateColonyMetropolisRelation() {
-        empires.forEach( e => {
+        empires.forEach(e => {
             const colons = GetColonies(e);
             const best = colons.reduce((acc, cur) => acc = acc.val > cur.val ? cur : acc, e);
             if (best.id != e.id) {
@@ -142,14 +142,14 @@ function* Imperial(range, N, NumberOfEmpires, iterations = 1000, alpha = 0.5, be
         yield nations;
         UpdateColonyMetropolisRelation();
         RemoveEmpiresWithoutColonies();
-        if(empires.length == 1) {
+        if (empires.length == 1) {
             break;
         }
-        ImperialisticCompetition();  
+        ImperialisticCompetition();
         empires.sort(sortNations);
         colonies.sort(sortNations);
         yield nations;
-        
+
     }
     yield nations
 }
@@ -159,36 +159,36 @@ function* GetData(config) {
     }
     function MakeColorDarker(color) {
         const darkifyCoefficient = 0.8;
-        let {r,g,b} = ParseColor(color)
+        let { r, g, b } = ParseColor(color)
         r *= darkifyCoefficient
         g *= darkifyCoefficient
         b *= darkifyCoefficient
-        return `RGB(${r},${g},${b})` 
+        return `RGB(${r},${g},${b})`
     }
     function GetRange(nations_) {
-        const minX = nations_.map(c => c.x).reduce( findMinimumReducer, nations_[0].x)
-        const minY = nations_.map(c => c.y).reduce( findMinimumReducer, nations_[0].y)
-        const maxX = nations_.map(c => c.x).reduce( findMaximumReducer, nations_[0].x)
-        const maxY = nations_.map(c => c.y).reduce( findMaximumReducer, nations_[0].y)
+        const minX = nations_.map(c => c.x).reduce(findMinimumReducer, nations_[0].x)
+        const minY = nations_.map(c => c.y).reduce(findMinimumReducer, nations_[0].y)
+        const maxX = nations_.map(c => c.x).reduce(findMaximumReducer, nations_[0].x)
+        const maxY = nations_.map(c => c.y).reduce(findMaximumReducer, nations_[0].y)
         const SPACE_MULTIPLIER = 0.2
         const deltaX = (maxX - minX)
-        const deltaY =  (maxY - minY)
-        const dx = deltaX > 0 ?  deltaX * SPACE_MULTIPLIER : 0.5 
-        const dy = deltaY > 0 ?  deltaY * SPACE_MULTIPLIER : 0.5
-        return RangeXY(minX - dx , maxX + dx, minY - dy, maxY + dy);
+        const deltaY = (maxY - minY)
+        const dx = deltaX > 0 ? deltaX * SPACE_MULTIPLIER : 0.5
+        const dy = deltaY > 0 ? deltaY * SPACE_MULTIPLIER : 0.5
+        return RangeXY(minX - dx, maxX + dx, minY - dy, maxY + dy);
     }
     function GetEmpires(nations) {
         return nations.filter(n => n.metropolis == null)
     }
     function GetColonies(nations) {
-        return nations.filter(n => n.metropolis !== null )
+        return nations.filter(n => n.metropolis !== null)
     }
-    const GetColoniesFromEmpire = (empire,colonies) => colonies.filter(c => c.metropolis == empire.id);
+    const GetColoniesFromEmpire = (empire, colonies) => colonies.filter(c => c.metropolis == empire.id);
     const IsColony = n => n.metropolis !== null
-    function MapDots(nations,empires, colonies,range) { 
+    function MapDots(nations, empires, colonies, range) {
         const widthMultiplier = WIDTH / (range.x.stop - range.x.start);
         const heightMultipler = HEIGHT / (range.y.stop - range.y.start);
-        const nationsMapped = nations.map( n => {
+        const nationsMapped = nations.map(n => {
             let result = {
                 x: widthMultiplier * (n.x - range.x.start),
                 y: heightMultipler * (n.y - range.y.start),
@@ -197,7 +197,7 @@ function* GetData(config) {
                 realX: n.x,
                 realY: n.y
             }
-            if(IsColony(n)) {
+            if (IsColony(n)) {
                 let i = colonies.indexOf(n)
                 result.r = GetRadius(i, colonies.length, COLONY_BASE_RADIUS)
                 result.color = empires.find(el => el.id == n.metropolis).color
@@ -210,18 +210,18 @@ function* GetData(config) {
             }
             return result
         })
-        return {nations: nationsMapped, range};
+        return { nations: nationsMapped, range };
     }
     function DetermineRange(empires, colonies) {
-        if(RESCALE === "rescale-never") {
+        if (RESCALE === "rescale-never") {
             return RANGE;
         }
-        if(RESCALE === "rescale-empires") {
+        if (RESCALE === "rescale-empires") {
             return GetRange(empires)
         }
         return GetRange(colonies)
     }
-    const {N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA, RESCALE, FORMULA} = config;
+    const { N, N_EMPIRES, RANGE, ITERATIONS, ALPHA, BETA, GAMMA, RESCALE, FORMULA } = config;
     const COLONY_BASE_RADIUS = 5;
     const METRO_BASE_RADIUS = 30;
     const METRO_ADD_RADIUS = 150;
@@ -233,10 +233,9 @@ function* GetData(config) {
         const nations = next.value;
         const colonies = GetColonies(nations).sort(sortNations);
         const empires = GetEmpires(nations).sort(sortNations);
-        yield MapDots(nations,empires, colonies, range)
+        yield MapDots(nations, empires, colonies, range)
         range = DetermineRange(empires, colonies)
-        yield MapDots(nations,empires, colonies, range) // updated scale
+        yield MapDots(nations, empires, colonies, range) // updated scale
         next = imperial.next();
     }
 }
-const RANGE = RangeXY(-10,10,-10,10);

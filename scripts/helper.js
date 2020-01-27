@@ -1,5 +1,5 @@
 function RandomColor() {
-    const ColorValues = Array.from( {length: 3}, () => parseInt(Math.random() * 255) );
+    const ColorValues = Array.from({ length: 3 }, () => parseInt(Math.random() * 255));
     const FillString = `RGB(${ColorValues[0]},${ColorValues[1]},${ColorValues[2]})`;
     return FillString;
 }
@@ -7,16 +7,16 @@ function RandomInt(max) {
     return parseInt(Math.random() * max);
 }
 function RandomSign() {
-    return Math.random() > 0.5 ? 1 : -1; 
+    return Math.random() > 0.5 ? 1 : -1;
 }
 function RandomFromRange(range) {
     return Math.random() * (Math.abs(range.start) + Math.abs(range.stop)) + range.start;
-} 
-function ParseColor(stringColor) {
-    const colorArray =  stringColor.match(/\d+/g).map(Number)
-    return {r: colorArray[0], g: colorArray[1], b: colorArray[2]}
 }
-const RangeXY = (x1, x2, y1,y2) => {return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } }}
+function ParseColor(stringColor) {
+    const colorArray = stringColor.match(/\d+/g).map(Number)
+    return { r: colorArray[0], g: colorArray[1], b: colorArray[2] }
+}
+const RangeXY = (x1, x2, y1, y2) => { return { x: { start: x1, stop: x2 }, y: { start: y1, stop: y2 } } }
 function GetRandomFromArrayWithProbabilites(results, weights) {
     var num = Math.random(),
         s = 0,
@@ -37,8 +37,8 @@ function ShowArray(a, label) {
     a.forEach(Show);
     console.log("ilosc elementow", a.length)
 }
-function RangeFromArrays(X,Y) {
-    return RangeXY( X[0], X[1], Y[0], Y[1] )
+function RangeFromArrays(X, Y) {
+    return RangeXY(X[0], X[1], Y[0], Y[1])
 }
 
 

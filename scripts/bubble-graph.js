@@ -93,9 +93,9 @@ function UpdateData(newData, range) {
         .attr("cy", d => d.y)
         .style("fill", d => d.color)
     circle.on("mouseover", showTooltip)
-    .on("mousemove", moveTooltip)
-    .on("mouseleave", hideTooltip)
-        
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", hideTooltip)
+
 
     const rangeX = RangeToArray(range.x).map(a => a * RANGE_MULTIPLIER_X)
     const rangeY = RangeToArray(range.y).map(a => a * RANGE_MULTIPLIER_Y)

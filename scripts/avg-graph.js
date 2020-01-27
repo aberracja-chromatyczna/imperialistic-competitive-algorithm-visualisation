@@ -10,12 +10,12 @@ const avgSvg = d3.select("#avg-value-container")
 const baseRangeX = [1, 10]
 const baseRangeY = [0.5, 20]
 const colorAvgPlot = 'green', colorMinPlot = 'blue'
-const IsBeyondNormalDisplay = range => math.abs( range.start ) < MIN_VAL || 
-math.abs(range.stop) < MIN_VAL ||  
-math.abs( range.start ) > MAX_VAL || 
-math.abs(range.stop) > MAX_VAL
+const IsBeyondNormalDisplay = range => math.abs(range.start) < MIN_VAL ||
+    math.abs(range.stop) < MIN_VAL ||
+    math.abs(range.start) > MAX_VAL ||
+    math.abs(range.stop) > MAX_VAL
 function DetermineFormatForAxes(range) {
-    if( IsBeyondNormalDisplay(range) ) {
+    if (IsBeyondNormalDisplay(range)) {
         return d3.format("0.1e")
     }
     return null
@@ -91,6 +91,5 @@ function UpdateAvg(data, dataBest) {
     avgSvg.selectAll("g.xaxis")
         .transition().duration(PLOT_DELAY)
         .call(d3.axisBottom(xAxis).tickFormat(DetermineFormatForAxes(range.x)))
-
 }
 
