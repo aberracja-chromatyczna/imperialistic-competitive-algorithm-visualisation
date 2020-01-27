@@ -40,7 +40,6 @@ table td, table th {
 .wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: center;
 }
 .right-side-wrapper {
   overflow: auto;
