@@ -125,3 +125,37 @@ input[type=number] {
 .tooltip {
   position: absolute
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  
+}
+ a:link.github-link, a:visited.github-link {
+  background-color: #2f83a9;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+ a:hover.github-link, a:active.github-link {
+  background-color: #84b4c8;
+}
+
+a:link.confused-link, a:visited.confused-link {
+  background-color: #d2736c;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+ a:hover.confused-link, a:active.confused-link {
+  background-color: #cc8f8b;
+}
+.confused-link {
+  margin-left: 5px;
+}
