@@ -1,5 +1,7 @@
 # Imperialist competitive algorhitm visualistion
 
+![pic should be here :()](https://raw.githubusercontent.com/tomsiemek/imperialistic-competitive-algorithm-visualisation/master/pics/everything.png)
+
 ## What is it?
 
 Imperialist competitive algorithm is [population based heuristic](https://en.wikipedia.org/wiki/Evolutionary_computation), which utilises some [swarm intelligence](https://en.wikipedia.org/wiki/Swarm_intelligence) like mechanisms and competition similar to genetic algorithm. 
@@ -30,6 +32,8 @@ https://tomsiemek.github.io/imperialistic-competitive-algorithm-visualisation/
 * hover on nation for tooltip
 
 ## Cryptic parameters
+
+![pic should be here :()](https://raw.githubusercontent.com/tomsiemek/imperialistic-competitive-algorithm-visualisation/master/pics/beta-gamma.png)
 
 **Alpha** - [0, 1] - coefficient in calculating total empire power - how important are colonies in evaluation value of empire
 
