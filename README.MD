@@ -1,6 +1,8 @@
-# [Imperialist competitive algorithm visualistion](https://tomsiemek.github.io/imperialistic-competitive-algorithm-visualisation/)
+# Imperialist competitive algorithm visualistion
 
 ![pic should be here :()](https://raw.githubusercontent.com/tomsiemek/imperialistic-competitive-algorithm-visualisation/master/pics/everything.png)
+
+### [working demo](https://tomsiemek.github.io/imperialistic-competitive-algorithm-visualisation/)
 
 ## What is it?
 
